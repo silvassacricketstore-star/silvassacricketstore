@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin · SCS</title><link rel="icon" href="../Assets/logo/logo.png"><script>/* trims the logo's empty margins, then uses it for the tab icon and the on-page logo */
+(function(){var i=new Image();i.onload=function(){try{var s=Math.min(1,256/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.max(1,Math.round(i.naturalWidth*s)),h=Math.max(1,Math.round(i.naturalHeight*s)),t=document.createElement('canvas');t.width=w;t.height=h;var tx=t.getContext('2d');tx.drawImage(i,0,0,w,h);var d=tx.getImageData(0,0,w,h).data,x0=w,y0=h,x1=-1,y1=-1,y,x,k;for(y=0;y<h;y++)for(x=0;x<w;x++){k=(y*w+x)*4;if(d[k+3]>20&&!(d[k]>240&&d[k+1]>240&&d[k+2]>240)){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}if(x1<0)return;var cw=x1-x0+1,ch=y1-y0+1,m=Math.max(cw,ch),c=document.createElement('canvas');c.width=c.height=64;var cx=c.getContext('2d'),f=62/m;cx.drawImage(t,x0,y0,cw,ch,(64-cw*f)/2,(64-ch*f)/2,cw*f,ch*f);var l=document.querySelector('link[rel=icon]');l.type='image/png';l.href=c.toDataURL('image/png');
+var rx=x0/s,ry=y0/s,rw=cw/s,rh=ch/s,q=Math.min(1,600/Math.max(rw,rh)),p=document.createElement('canvas');p.width=Math.max(1,Math.round(rw*q));p.height=Math.max(1,Math.round(rh*q));p.getContext('2d').drawImage(i,rx,ry,rw,rh,0,0,p.width,p.height);window.SCS_LOGO=p.toDataURL('image/png');
+var ap=function(){document.querySelectorAll('.logo img:not([data-c])').forEach(function(e){e.dataset.c=1;e.src=window.SCS_LOGO})};ap();new MutationObserver(ap).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}};i.src='../Assets/logo/logo.png'})();</script><meta name="robots" content="noindex">
+<style>
+:root{--side:#0F1B2D;--side2:#17263B;--green:#0B6B45;--lime:#C4E86B;--bg:#F4F6F5;--line:#E1E6E3;--ink:#10201A;--mut:#6B766F;--err:#B3261E;--amb:#B26A00}
+*{box-sizing:border-box;margin:0}body{font:14px/1.5 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg)}button,select,input,textarea{font:inherit}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh;transition:grid-template-columns .25s}.app.min{grid-template-columns:68px 1fr}
+.side{background:var(--side);color:#cfd8e3;padding:16px 10px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{display:flex;gap:10px;align-items:center;color:#fff;font-weight:700;padding:6px 10px 18px;white-space:nowrap}.logo{flex-direction:column;align-items:flex-start;gap:6px}.logo img{width:auto;height:auto;max-width:190px;max-height:84px;object-fit:contain;flex:none;border-radius:8px}.min .logo img{max-width:46px;max-height:46px}@media(max-width:1000px){.logo img{max-width:46px;max-height:46px}}.logo i{width:28px;height:28px;border-radius:50%;background:var(--lime);flex:none}
+.nav a{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:8px;color:inherit;text-decoration:none;white-space:nowrap;margin-bottom:2px}.nav a:hover{background:var(--side2)}.nav a.on{background:var(--green);color:#fff}.nav b{width:18px;text-align:center;flex:none}
+.min .nav span,.min .logo span{display:none}.main{min-width:0}
+.top{display:flex;align-items:center;gap:12px;padding:12px 24px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}.grow{flex:1}.crumb{color:var(--mut)}.crumb b{color:var(--ink)}
+.ghost{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;color:inherit;text-decoration:none}.ghost:hover{border-color:var(--green)}.ghost.d{color:var(--err)}
+.solid{background:var(--green);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer}
+.pad{padding:24px;max-width:1400px}h1{font-size:22px;font-weight:650}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap}.head>div{display:flex;gap:10px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}.kpi small{color:var(--mut);display:block}.kpi strong{font-size:24px;font-weight:650}
+.two{display:grid;grid-template-columns:2fr 1fr;gap:14px}@media(max-width:1000px){.two{grid-template-columns:1fr}.app{grid-template-columns:68px 1fr}.nav span,.logo span{display:none}}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}th{font-size:12px;color:var(--mut);font-weight:600;white-space:nowrap}.wrapx{overflow-x:auto}td.ac{white-space:nowrap;text-align:right}td.ac button{margin-left:6px;padding:4px 10px}
+.badge{padding:2px 8px;border-radius:99px;font-size:12px;background:#E8EEEA;white-space:nowrap}.badge.ok{background:#DDF3E7;color:var(--green)}.badge.warn{background:#FFF0D6;color:var(--amb)}.badge.bad{background:#FBE0DD;color:var(--err)}
+.empty{text-align:center;color:var(--mut);padding:36px 12px}.gate{max-width:480px;margin:12vh auto;padding:0 16px}
+.sk{height:76px;border-radius:10px;background:linear-gradient(90deg,#eceeed,#f7f8f7,#eceeed);background-size:200% 100%;animation:sk 1.2s infinite}@keyframes sk{to{background-position:-200% 0}}
+.alert{background:#FBE0DD;color:var(--err);border-radius:8px;padding:10px 14px;margin-bottom:14px}.okmsg{background:#DDF3E7;color:var(--green);border-radius:8px;padding:10px 14px;margin-bottom:14px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:170px;padding-top:8px}.bars div{flex:1;background:var(--green);border-radius:4px 4px 0 0;min-height:2px;opacity:.9}.axis{display:flex;gap:4px;font-size:11px;color:var(--mut)}.axis span{flex:1;text-align:center;overflow:hidden}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}input,select{height:38px}.head input,.head select,td select{width:auto}td select{height:32px;padding:0 6px}
+label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.fg .w{grid-column:1/-1}@media(max-width:600px){.fg{grid-template-columns:1fr}}
+dialog{border:0;border-radius:12px;padding:22px;width:min(660px,94vw);max-height:92vh;overflow:auto;margin:auto}dialog::backdrop{background:rgba(15,27,45,.5)}.act{display:flex;justify-content:flex-end;gap:10px}
+.th{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.thumbs span{position:relative}.thumbs button{position:absolute;top:-6px;right:-6px;border:0;background:var(--err);color:#fff;border-radius:50%;width:18px;height:18px;cursor:pointer;line-height:1}.thumbs .th{width:64px;height:64px}
+dl{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;margin-top:12px}dt{color:var(--mut)}dd{word-break:break-word}
+:focus-visible{outline:3px solid rgba(11,107,69,.4);outline-offset:2px}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body><div id="root" class="empty">Checking access…</div><dialog id="dlg"></dialog>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, query, where, orderBy, limit, startAfter, writeBatch, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, doc, getCountFromServer, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const app = initializeApp({ apiKey: "AIzaSyBuhC88hfPaYatMF2eU8BCk9LmAMrheufE", authDomain: "silvassacricketstore-4557c.firebaseapp.com", projectId: "silvassacricketstore-4557c", storageBucket: "silvassacricketstore-4557c.firebasestorage.app", messagingSenderId: "441799530052", appId: "1:441799530052:web:6fc80bc509b1bad00f4e11" });
+const auth = getAuth(app), db = getFirestore(app);
+/* Cloudinary (images). Only the cloud name + an UNSIGNED upload preset live in the browser. NEVER put the API secret here. */
+const CLOUD_NAME = "vu578h7l", UPLOAD_PRESET = "silvassa_products_signed";
+async function uploadImage(file) {
+  const fd = new FormData(); fd.append("file", file); fd.append("upload_preset", UPLOAD_PRESET); fd.append("folder", "products");
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: fd });
+  const j = await r.json(); if (!r.ok || !j.secure_url) throw new Error(j.error?.message || "Upload failed");
+  return j.secure_url;
+}
+const LOGIN_PAGE = "../index.html";
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const inr = n => isFinite(n) && n !== null && n !== "" ? "₹" + Number(n).toLocaleString("en-IN", { maximumFractionDigits: 2 }) : "—";
+const fd = t => t?.toDate ? t.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "";
+const toIn = t => t?.toDate ? t.toDate().toLocaleDateString("sv") : "";
+const fromIn = (s, end) => Timestamp.fromDate(new Date(s + (end ? "T23:59:59" : "T00:00:00")));
+const bc = s => /^(PAID|DELIVERED|COMPLETED|active|approved|answered|refunded|delivered|captured)$/i.test(s) ? "ok" : /^(FAILED|CANCELLED|EXPIRED|rejected|failed|rto|archived)$/i.test(s) ? "bad" : "warn";
+const ROLE_NAMES = { owner: "Super Admin", manager: "Manager", inventory: "Inventory Manager", support: "Support Staff", accountant: "Accountant" };
+const PAID = ["PAID","PROCESSING","READY_TO_SHIP","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","COMPLETED","NDR","RETURN_REQUESTED","RTO_INITIATED"], BAD = ["FAILED","EXPIRED","CANCELLED"];
+// Allowed next states. PAID is never set by hand: payment must be confirmed by the payment gateway, not a button.
+const NEXT = { PAID: ["PROCESSING","CANCELLED"], PROCESSING: ["READY_TO_SHIP","CANCELLED"], READY_TO_SHIP: ["SHIPPED"], SHIPPED: ["OUT_FOR_DELIVERY","RTO_INITIATED"], OUT_FOR_DELIVERY: ["DELIVERED","NDR"], NDR: ["OUT_FOR_DELIVERY","RTO_INITIATED"], DELIVERED: ["COMPLETED","RETURN_REQUESTED"] };
+const A = "owner,manager,inventory,support,accountant";
+
+/* ---------- module configs: [key,label,type,required,options] ---------- */
+const CFG = {
+  orders: { t: "Orders", col: "orders", roles: "owner,manager,support", order: ["createdAt", "desc"], sel: "status", opts: r => [r.d.status, ...(NEXT[r.d.status] || [])].filter(Boolean),
+    cols: [["_id", "Order"], ["customerName", "Customer"], ["grandTotal", "Total", "inr"], ["paymentMethod", "Payment"], ["paymentStatus", "Paid?", "badge"], ["status", "Status", "sel"], ["createdAt", "Date", "date"]] },
+  products: { t: "Products", col: "products", roles: "owner,manager,inventory", add: 1, edit: 1, del: 1, costKey: "buyingPrice", mirror: ["price", "mrp"], // buying price lives in productCosts (staff-only); MRP is public
+   
+    cols: [["_img", "", "img"], ["name", "Name"], ["category", "Category"], ["mrp", "MRP (customer)", "inr"], ["_cost", "Buying price", "inr"], ["_margin", "Margin", "margin"], ["stock", "Stock"], ["status", "Status", "badge"]],
+    fields: [["name", "Product name", "text", 1], ["category", "Category", "text", 1], ["brand", "Brand", "text"], ["sku", "SKU", "text"], ["size", "Size (e.g. SH, Size 6)", "text"], ["weight", "Weight (e.g. 2.8–2.9 lbs)", "text"], ["description", "About this product (description)", "textarea", 0, "w"], ["highlights", "Highlights — up to 6, one per line as Label: value (e.g. Willow: English Willow)", "textarea", 0, "w"], ["features", "Key features (one per line)", "textarea", 0, "w"], ["material", "Material & construction", "textarea", 0, "w"], ["performance", "Performance characteristics", "textarea", 0, "w"], ["playingStyle", "Recommended playing style", "textarea", 0, "w"], ["inBox", "What's in the box (one per line)", "textarea", 0, "w"], ["care", "Care & maintenance", "textarea", 0, "w"], ["warranty", "Warranty", "textarea", 0, "w"], ["specs", "Specifications (one per line as Label: value, e.g. Handle: Cane)", "textarea", 0, "w"], ["sizeGuide", "Size guide", "textarea", 0, "w"], ["fbt", "Frequently bought together — SKUs of accessories, comma separated", "text", 0, "w"], ["videoUrl", "Product video link (YouTube or https .mp4)", "text", 0, "w"], ["buyingPrice", "Buying price (₹) — what you paid, private", "cost", 1], ["mrp", "MRP (₹) — shown to customers", "number", 1], ["stock", "Stock quantity", "number", 1], ["status", "Status", "select", 1, ["active", "draft", "archived"]], ["images", "Product images (first one is the main image)", "images", 0, "w"], ["actionImages", "Product in action — lifestyle images", "images", 0, "w"]],
+    check: d => !(d.mrp > 0) ? "MRP must be greater than zero." : d.videoUrl && !/^https:\/\//.test(d.videoUrl) ? "Video link must start with https://" : "" },
+  inventory: { t: "Inventory", col: "products", roles: "owner,manager,inventory", edit: 1, cols: [["_img", "", "img"], ["name", "Product"], ["sku", "SKU"], ["category", "Category"], ["stock", "In stock", "stock"]], fields: [["stock", "Stock quantity", "number", 1]] },
+  customers: { t: "Customers", col: "users", roles: "owner,manager,support", tog: "blocked", cols: [["name", "Name"], ["email", "Email"], ["phone", "Phone"], ["createdAt", "Joined", "date"], ["blocked", "Account", "bool"]] },
+  payments: { t: "Payments", col: "orders", roles: "owner,accountant", order: ["createdAt", "desc"], cols: [["_id", "Order"], ["paymentId", "Payment ID"], ["paymentMethod", "Method"], ["paymentStatus", "Status", "badge"], ["grandTotal", "Amount", "inr"], ["createdAt", "Date", "date"]] },
+  refunds: { t: "Refunds", col: "refunds", roles: "owner,manager,accountant,support", add: 1, edit: 1, sel: "status", opts: () => ["requested", "approved", "rejected", "refunded", "failed"],
+    cols: [["orderId", "Order"], ["amount", "Amount", "inr"], ["reason", "Reason"], ["status", "Status", "sel"], ["createdAt", "Date", "date"]],
+    fields: [["orderId", "Order ID", "text", 1], ["amount", "Refund amount (₹)", "number", 1], ["status", "Status", "select", 1, ["requested", "approved", "rejected", "refunded", "failed"]], ["reason", "Reason", "textarea", 0, "w"]] },
+  shipping: { t: "Shipping", col: "shipments", roles: "owner,manager", add: 1, edit: 1, del: 1,
+    cols: [["orderId", "Order"], ["courier", "Courier"], ["awb", "AWB"], ["status", "Status", "badge"], ["expectedDelivery", "Expected", "date"]],
+    fields: [["orderId", "Order ID", "text", 1], ["courier", "Courier", "text", 1], ["awb", "AWB / tracking no.", "text"], ["trackingUrl", "Tracking URL (https)", "text"], ["status", "Status", "select", 1, ["pending", "picked_up", "in_transit", "out_for_delivery", "delivered", "ndr", "rto"]], ["expectedDelivery", "Expected delivery", "date"]],
+    check: d => d.trackingUrl && !/^https:\/\//.test(d.trackingUrl) ? "Tracking URL must start with https://" : "" },
+  coupons: { t: "Coupons", col: "coupons", roles: "owner,manager", add: 1, edit: 1, del: 1, id: "code",
+    cols: [["code", "Code"], ["discountPercent", "% off"], ["minPrice", "Min cart", "inr"], ["maxDiscount", "Max off", "inr"], ["validFrom", "From", "date"], ["validTo", "Valid until", "date"], ["active", "Status", "act"]],
+    fields: [["code", "Coupon code", "upper", 1], ["discountPercent", "Discount (% off)", "number", 1], ["minPrice", "Minimum cart value (₹)", "number", 1], ["maxDiscount", "Max discount (₹, optional)", "number"], ["validFrom", "Valid from", "date", 1], ["validTo", "Valid until", "date", 1], ["usageLimit", "Total usage limit (optional)", "number"], ["active", "Status", "select", 1, ["active", "inactive"]]],
+    check: d => d.discountPercent < 1 || d.discountPercent > 100 ? "Discount must be between 1 and 100%." : d.minPrice < 0 ? "Minimum cart value cannot be negative." : d.validTo.toMillis() < d.validFrom.toMillis() ? "'Valid until' must be after 'Valid from'." : "" },
+  reviews: { t: "Reviews", col: "reviews", roles: "owner,manager", del: 1, sel: "status", opts: () => ["pending", "approved", "rejected"],
+    cols: [["productName", "Product"], ["userName", "Customer"], ["rating", "Rating"], ["text", "Review"], ["status", "Status", "sel"], ["createdAt", "Date", "date"]] },
+  questions: { t: "Questions", col: "questions", roles: "owner,manager,support", edit: 1, del: 1, order: ["createdAt", "desc"],
+    cols: [["productName", "Product"], ["userName", "Customer"], ["text", "Question"], ["status", "Status", "badge"], ["createdAt", "Date", "date"]],
+    fields: [["answer", "Answer (shown publicly on the product page)", "textarea", 0, "w"], ["status", "Status", "select", 1, ["pending", "answered", "rejected"]]],
+    check: d => d.status === "answered" && !d.answer ? "Write an answer before marking it answered." : "" },
+  alerts: { t: "Alerts", col: "alerts", roles: "owner,manager,inventory", del: 1, order: ["createdAt", "desc"],
+    cols: [["productName", "Product"], ["type", "Alert", "badge"], ["email", "Customer email"], ["createdAt", "Date", "date"]] },
+  faqs: { t: "FAQs", col: "faqs", roles: "owner,manager", add: 1, edit: 1, del: 1, order: ["order", "asc"],
+    cols: [["order", "Order"], ["question", "Question"], ["category", "Category"], ["active", "Visible", "yn"]],
+    fields: [["question", "Question", "text", 1], ["answer", "Answer", "textarea", 1, "w"], ["category", "Category (e.g. Shipping, Returns, Payment)", "text"], ["order", "Display order (1 shows first)", "number", 1], ["active", "Visibility", "yn", 1]],
+    check: d => d.question.length < 5 ? "Question is too short." : d.answer.length < 5 ? "Answer is too short." : d.order < 0 ? "Order cannot be negative." : "" }
+};
+const MODULES = [["dashboard", "Dashboard", "▦", A], ["orders", "Orders", "▤"], ["products", "Products", "◧"], ["inventory", "Inventory", "▥"], ["customers", "Customers", "☺"], ["payments", "Payments", "₹"], ["refunds", "Refunds", "↺"], ["shipping", "Shipping", "➤"], ["coupons", "Coupons", "%"], ["reviews", "Reviews", "★"], ["questions", "Questions", "❓"], ["alerts", "Alerts", "🔔"], ["notify", "Send notification", "✉", "owner,manager"], ["faqs", "FAQs", "?"], ["reports", "Reports", "▨", "owner,manager,accountant"]].map(m => [m[0], m[1], m[2], m[3] || CFG[m[0]].roles]);
+let ROLE = null, user = null;
+
+/* ---------- access gate (uses the store's sign-in; role from adminUsers/{uid}) ---------- */
+function gate(title, body, btn) {
+  $("#root").className = ""; $("#root").innerHTML = `<div class="gate card"><h1>${esc(title)}</h1><p style="margin:10px 0 16px;color:var(--mut)">${body}</p>${btn ? `<button class="solid" id="g1">${esc(btn[0])}</button> ` : ""}${user ? `<button class="ghost" id="g2">Sign out</button>` : ""}</div>`;
+  if (btn) $("#g1").onclick = btn[1]; if (user) $("#g2").onclick = () => signOut(auth).then(() => location.reload());
+}
+onAuthStateChanged(auth, async u => {
+  user = u && !u.isAnonymous ? u : null;
+  if (!user) return gate("Sign in required", "Sign in with your staff account on the store login page.", ["Go to sign in", () => location.href = LOGIN_PAGE]);
+  try {
+    const s = await getDoc(doc(db, "adminUsers", user.uid)), d = s.exists() ? s.data() : null;
+    if (!d || d.active !== true || !ROLE_NAMES[d.role]) return gate("No admin access", `This account (${esc(user.email || "no email")}) is not an active staff member.<br>Account ID: <code>${esc(user.uid)}</code>`);
+    ROLE = d.role; shell(); route(); resetIdle();
+  } catch (e) { console.error(e); gate("Could not verify access", "Check your connection and Firestore rules.", ["Reload", () => location.reload()]); }
+});
+addEventListener("hashchange", () => ROLE && route());
+function shell() {
+  const mods = MODULES.filter(m => m[3].split(",").includes(ROLE));
+  $("#root").className = ""; $("#root").innerHTML = `<div class="app" id="app"><aside class="side"><div class="logo"><img src="../Assets/logo/logo.png" alt="SCS logo" onerror="this.style.display='none'"><span>SilvassaCricket<br><small style="font-weight:400;opacity:.7">Admin</small></span></div><nav class="nav" aria-label="Main">${mods.map(m => `<a href="#${m[0]}" data-m="${m[0]}" title="${esc(m[1])}"><b>${m[2]}</b><span>${esc(m[1])}</span></a>`).join("")}</nav></aside>
+  <div class="main"><header class="top"><button class="ghost" id="col" aria-label="Collapse sidebar">☰</button><div class="crumb" id="crumb"></div><div class="grow"></div><span class="badge ok">${esc(ROLE_NAMES[ROLE])}</span><span class="crumb">${esc(user.email || "")}</span><button class="ghost" id="out">Sign out</button></header><main class="pad" id="view"></main></div></div>`;
+  $("#col").onclick = () => $("#app").classList.toggle("min"); $("#out").onclick = () => signOut(auth).then(() => location.reload());
+}
+function route() {
+  const id = (location.hash || "#dashboard").slice(1), m = MODULES.find(x => x[0] === id) || MODULES[0], view = $("#view");
+  document.querySelectorAll(".nav a").forEach(a => a.classList.toggle("on", a.dataset.m === m[0])); $("#crumb").innerHTML = `Admin / <b>${esc(m[1])}</b>`;
+  if (!m[3].split(",").includes(ROLE)) return view.innerHTML = `<div class="card empty"><h1>No access</h1><p>Your role cannot open this page.</p></div>`;
+  ({ dashboard, reports, notify })[m[0]] ? ({ dashboard, reports, notify })[m[0]](view) : crud(view, m[0]);
+}
+
+/* ---------- generic list + add / edit / delete ---------- */
+async function crud(view, id) {
+  const c = CFG[id]; let rows = [], last = null, more = false, q = "";
+  view.innerHTML = `<div class="head"><h1>${esc(c.t)}</h1><div><input id="q" placeholder="Search…" aria-label="Search">${c.add ? `<button class="solid" id="add">+ Add</button>` : ""}</div></div><div id="msg"></div><div class="card wrapx" id="tb"><div class="empty">Loading…</div></div><div id="more" class="empty"></div>`;
+  const note = (t, bad) => $("#msg").innerHTML = t ? `<div class="${bad ? "alert" : "okmsg"}" role="alert">${esc(t)}</div>` : "";
+  const find = i => rows.find(r => r.id === i);
+  async function load(next) {
+    try {
+      const qs = [...(c.order ? [orderBy(...c.order)] : []), ...(next && last ? [startAfter(last)] : []), limit(50)];
+      const s = await getDocs(query(collection(db, c.col), ...qs));
+      rows = next ? rows.concat(s.docs.map(x => ({ id: x.id, d: x.data() }))) : s.docs.map(x => ({ id: x.id, d: x.data() }));
+      last = s.docs[s.docs.length - 1]; more = s.size === 50;
+      if (c.costKey) { try { const m = {}; (await getDocs(query(collection(db, "productCosts"), limit(1000)))).docs.forEach(x => m[x.id] = x.data().buyingPrice); rows.forEach(r => r.cost = m[r.id]); } catch (e) { console.error("costs:", e); } }
+      draw();
+    } catch (e) { console.error(e); $("#tb").innerHTML = `<div class="alert">Could not load. Check Firestore rules or create the index shown in the console.</div>`; }
+  }
+  function cell(r, [k, , t]) {
+    let v = k === "_id" ? r.id : k === "_cost" ? r.cost : r.d[k]; if (c.col === "users") { const ALT = { name: ["displayName", "fullName", "userName"], phone: ["mobile", "phoneNumber", "contact"], email: ["emailAddress"], createdAt: ["joinedAt", "created"] }[k]; if ((v == null || v === "") && ALT) v = ALT.map(a => r.d[a]).find(Boolean); if (v == null || v === "") return `<span class="crumb">—</span>`; } if (k === "name" && v == null) v = r.d.displayName; if (k === "mrp" && v == null) v = r.d.price;
+    if (t === "margin") { const m = r.cost > 0 && (r.d.mrp ?? r.d.price) > 0 ? ((r.d.mrp ?? r.d.price) - r.cost) / (r.d.mrp ?? r.d.price) * 100 : null; return m == null ? "—" : `<span class="badge ${m < 0 ? "bad" : m < 10 ? "warn" : "ok"}">${m.toFixed(0)}%</span>`; }
+    if (t === "inr") return inr(v); if (t === "date") return esc(fd(v));
+    if (t === "badge") return v == null ? "" : `<span class="badge ${bc(v)}">${esc(v)}</span>`;
+    if (t === "yn") return v === false ? `<span class="badge warn">Hidden</span>` : `<span class="badge ok">Visible</span>`;
+    if (t === "bool") return v ? `<span class="badge bad">Blocked</span>` : `<span class="badge ok">Active</span>`;
+    if (t === "act") return `<span class="badge ${v === "active" && (!r.d.validTo?.toMillis || r.d.validTo.toMillis() >= Date.now()) ? "ok" : "bad"}">${v === "active" ? (r.d.validTo?.toMillis && r.d.validTo.toMillis() < Date.now() ? "Expired" : "Active") : "Inactive"}</span>`;
+    if (t === "stock") return `<span class="badge ${v <= 0 ? "bad" : v <= 5 ? "warn" : "ok"}">${esc(v ?? 0)}</span>`;
+    if (t === "img") { const u = (r.d.images || [])[0]; return /^https:/.test(u || "") ? `<img class="th" src="${esc(u)}" alt="" loading="lazy">` : ""; }
+    if (t === "sel") return `<select data-s="${esc(r.id)}" aria-label="Status">${c.opts(r).map(o => `<option${o === v ? " selected" : ""}>${esc(o)}</option>`).join("")}</select>`;
+    return esc(String(v ?? "").slice(0, 80));
+  }
+  function draw() {
+    const f = rows.filter(r => !q || JSON.stringify([r.id, ...Object.values(r.d).filter(x => typeof x !== "object")]).toLowerCase().includes(q));
+    $("#tb").innerHTML = f.length ? `<table><tr>${c.cols.map(x => `<th>${esc(x[1])}</th>`).join("")}<th></th></tr>${f.map(r => `<tr>${c.cols.map(x => `<td>${cell(r, x)}</td>`).join("")}<td class="ac"><button class="ghost" data-v="${esc(r.id)}">View</button>${c.edit ? `<button class="ghost" data-e="${esc(r.id)}">Edit</button>` : ""}${c.tog ? `<button class="ghost${r.d[c.tog] ? "" : " d"}" data-t="${esc(r.id)}">${r.d[c.tog] ? "Unblock" : "Block"}</button>` : ""}${c.del ? `<button class="ghost d" data-d="${esc(r.id)}">Delete</button>` : ""}</td></tr>`).join("")}</table>` : `<div class="empty">${rows.length ? "No matches." : `No ${esc(c.t.toLowerCase())} yet.`}</div>`;
+    $("#more").innerHTML = more ? `<button class="ghost" id="lm">Load more</button>` : ""; if (more) $("#lm").onclick = () => load(true);
+    const tb = $("#tb");
+    tb.querySelectorAll("[data-v]").forEach(b => b.onclick = () => viewDoc(find(b.dataset.v)));
+    tb.querySelectorAll("[data-e]").forEach(b => b.onclick = () => form(find(b.dataset.e)));
+    tb.querySelectorAll("[data-s]").forEach(s => s.onchange = async () => { const r = find(s.dataset.s); if (!confirm(`Change ${c.sel} to "${s.value}"?`)) return draw();
+      try { await updateDoc(doc(db, c.col, r.id), { [c.sel]: s.value, updatedAt: serverTimestamp(), updatedBy: user.uid }); r.d[c.sel] = s.value; note("Updated."); } catch (e) { console.error(e); note("Update failed (rules or connection).", 1); } draw(); });
+    tb.querySelectorAll("[data-t]").forEach(b => b.onclick = async () => { const r = find(b.dataset.t), v = !r.d[c.tog]; if (!confirm(`${v ? "Block" : "Unblock"} this customer?`)) return;
+      try { await updateDoc(doc(db, c.col, r.id), { [c.tog]: v, [c.tog + "At"]: serverTimestamp(), [c.tog + "By"]: user.uid }); r.d[c.tog] = v; note(v ? "Customer blocked." : "Customer unblocked."); } catch (e) { console.error(e); note("Failed (rules or connection).", 1); } draw(); });
+    tb.querySelectorAll("[data-d]").forEach(b => b.onclick = async () => { const r = find(b.dataset.d); if (!confirm(`Delete "${r.d.name || r.d.code || r.d.question || r.id}" permanently? This cannot be undone.`)) return;
+      try { await deleteDoc(doc(db, c.col, r.id)); rows = rows.filter(x => x.id !== r.id); note("Deleted."); } catch (e) { console.error(e); note("Delete failed (rules or connection).", 1); } draw(); });
+  }
+  async function viewCustomer(r) {
+    const d = $("#dlg"), g = (...k) => k.map(x => r.d[x]).find(Boolean), fmt = v => v?.toDate ? v.toDate().toLocaleString("en-IN") : Array.isArray(v) || (v && typeof v === "object") ? JSON.stringify(v, (k, x) => x?.toDate ? x.toDate().toISOString() : x) : v;
+    d.innerHTML = `<h2>${esc(g("name", "displayName", "fullName") || "Customer")}</h2><div id="cd" class="empty">Loading…</div><div class="act" style="margin-top:16px"><button class="solid" id="x">Close</button></div>`; d.showModal(); $("#x").onclick = () => d.close();
+    let os = []; try { os = (await getDocs(query(collection(db, "orders"), where("uid", "==", r.id), limit(100)))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)); } catch (e) { console.error(e); }
+    const spent = os.filter(o => PAID.includes(o.status)).reduce((a, o) => a + (+o.grandTotal || 0), 0), ao = os.find(o => o.shippingAddress || o.address), ad = ao && (ao.shippingAddress || ao.address), adt = ad && typeof ad === "object" ? Object.values(ad).filter(x => typeof x !== "object" && x).join(", ") : ad;
+    const ph = g("phone", "mobile", "phoneNumber") || os.map(o => o.customerPhone || o.phone).find(Boolean), rows = [["Name", g("name", "displayName", "fullName") || os.map(o => o.customerName).find(Boolean)], ["Email", g("email") || os.map(o => o.customerEmail || o.email).find(Boolean)], ["Mobile", ph], ["Joined", fmt(g("createdAt", "joinedAt"))], ["Account", r.d.blocked ? "Blocked" : "Active"], ["Orders", os.length], ["Total spent (paid orders)", inr(spent)], ["Latest delivery address", adt], ["Customer ID", r.id]].filter(x => x[1] !== undefined && x[1] !== null && x[1] !== "");
+    const used = ["name", "displayName", "fullName", "email", "phone", "mobile", "phoneNumber", "createdAt", "joinedAt", "blocked"], extra = Object.entries(r.d).filter(([k]) => !used.includes(k) && (typeof r.d[k] !== "object" || r.d[k]?.toDate));
+    $("#cd").className = ""; $("#cd").innerHTML = `<dl>${rows.concat(extra.map(([k, v]) => [k, fmt(v)])).map(x => `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join("")}</dl>${os.length ? `<h3 style="margin:16px 0 6px;font-size:15px">Recent orders</h3><div class="wrapx"><table><tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th></tr>${os.slice(0, 8).map(o => `<tr><td>${esc(o.orderNumber || o.id.slice(0, 8))}</td><td>${esc(fd(o.createdAt))}</td><td>${inr(o.grandTotal)}</td><td><span class="badge ${bc(o.status)}">${esc(o.status)}</span></td></tr>`).join("")}</table></div>` : `<p class="crumb" style="margin-top:12px">No orders yet.</p>`}`;
+  }
+  function viewDoc(r) {
+    if (c.col === "users") return viewCustomer(r);
+    const d = $("#dlg"), fmt = v => v?.toDate ? v.toDate().toLocaleString("en-IN") : Array.isArray(v) || (v && typeof v === "object") ? JSON.stringify(v, (k, x) => x?.toDate ? x.toDate().toISOString() : x) : v;
+    d.innerHTML = `<h2>${esc(c.t)} · ${esc(r.id)}</h2><dl>${Object.entries(c.costKey && r.cost != null ? { ...r.d, buyingPrice: r.cost } : r.d).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(fmt(v))}</dd>`).join("")}</dl><div class="act" style="margin-top:16px"><button class="solid" id="x">Close</button></div>`; d.showModal(); $("#x").onclick = () => d.close();
+  }
+  function form(r) {
+    const d = $("#dlg"), v = r ? r.d : {}; const IM = {}; c.fields.forEach(f => { if (f[2] === "images") IM[f[0]] = [...(v[f[0]] || [])]; });
+    const fld = ([k, l, t, req, o]) => { const val = k === c.costKey ? (r?.cost ?? "") : (v[k] ?? (k === "mrp" ? v.price ?? "" : "")), num = t === "number" || t === "cost", w = t === "textarea" || t === "images" ? " w" : "", lab = `<label for="f_${k}">${esc(l)}${req ? " *" : ""}</label>`; let inp;
+      if (t === "textarea") inp = `<textarea id="f_${k}" rows="3">${esc(val)}</textarea>`;
+      else if (t === "select") inp = `<select id="f_${k}">${o.map(x => `<option${x === val ? " selected" : ""}>${esc(x)}</option>`).join("")}</select>`;
+      else if (t === "yn") inp = `<select id="f_${k}"><option value="Active"${v[k] === false ? "" : " selected"}>Active (shown on store)</option><option value="Hidden"${v[k] === false ? " selected" : ""}>Hidden</option></select>`;
+      else if (t === "images") inp = `<div class="thumbs" id="th_${k}"></div><input id="fi_${k}" type="file" accept="image/*" multiple><small id="up_${k}" class="crumb"></small>`;
+      else if (t === "date") inp = `<input id="f_${k}" type="date" value="${esc(toIn(val))}">`;
+      else inp = `<input id="f_${k}" type="${num ? "number" : "text"}"${num ? ' min="0" step="any"' : ""} value="${esc(val)}"${t === "upper" && r ? " readonly" : ""} maxlength="200">`;
+      return `<div class="${w.trim()}">${lab}${inp}</div>`; };
+    d.innerHTML = `<form id="ff" novalidate><h2>${r ? "Edit" : "Add"} ${esc(c.t.replace(/s$/, ""))}</h2><div class="fg">${c.fields.map(fld).join("")}</div><div id="fe" class="alert" hidden role="alert"></div><div class="act"><button type="button" class="ghost" id="fc">Cancel</button><button class="solid" id="fs">Save</button></div></form>`;
+    Object.keys(IM).forEach(k => { const th = () => { const t = $("#th_" + k); t.innerHTML = IM[k].map((u, i) => `<span><img class="th" src="${esc(u)}" alt=""><button type="button" data-r="${i}" aria-label="Remove image">×</button></span>`).join(""); t.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { IM[k].splice(+b.dataset.r, 1); th(); }); }; th();
+      $("#fi_" + k).onchange = async e => { const up = $("#up_" + k); for (const f of [...e.target.files]) { if (!f.type.startsWith("image/") || f.size > 5e6) { up.textContent = "Images only, max 5 MB each."; continue; }
+        try { up.textContent = "Uploading " + f.name + "…"; IM[k].push(await uploadImage(f)); th(); up.textContent = ""; } catch (x) { console.error(x); up.textContent = "Upload failed: " + x.message; } } e.target.value = ""; }; });
+    $("#fc").onclick = () => d.close();
+    $("#ff").onsubmit = async e => { e.preventDefault(); const er = m => { $("#fe").textContent = m; $("#fe").hidden = false; }; $("#fe").hidden = true; const out = {};
+      for (const [k, l, t, req] of c.fields) { if (t === "images") { out[k] = IM[k]; continue; } if (t === "yn") { out[k] = $("#f_" + k).value === "Active"; continue; } let x = $("#f_" + k).value.trim();
+        if (req && x === "") return er(l + " is required.");
+        if (t === "number" || t === "cost") { if (x !== "") { x = +x; if (!isFinite(x) || x < 0) return er(l + " must be a valid number."); } else x = null; }
+        if (t === "upper") { x = x.toUpperCase(); if (!/^[A-Z0-9_-]{3,20}$/.test(x)) return er("Code: 3–20 letters/numbers."); }
+        if (t === "date" && x) x = fromIn(x, k === "validTo"); else if (t === "date") x = null;
+        out[k] = x; }
+      const msg = c.check ? c.check(out) : ""; if (msg) return er(msg);
+      const cost = c.costKey ? out[c.costKey] : undefined; if (c.costKey) delete out[c.costKey];
+      if (c.mirror) out[c.mirror[0]] = out[c.mirror[1]]; // keeps a "price" field (= MRP) so the storefront can read one customer price
+      if (cost != null && out.mrp != null && out.mrp < cost && !confirm("MRP is lower than your buying price — you would sell at a loss. Save anyway?")) return;
+      Object.keys(out).forEach(k => out[k] === null && delete out[k]); $("#fs").disabled = true;
+      try { let newId = null; const base = { ...out, updatedAt: serverTimestamp(), updatedBy: user.uid };
+        if (r) { await updateDoc(doc(db, c.col, r.id), base); }
+        else if (c.id) { const ref_ = doc(db, c.col, out[c.id]); if ((await getDoc(ref_)).exists()) { $("#fs").disabled = false; return er("That code already exists."); } await setDoc(ref_, { ...base, createdAt: serverTimestamp(), createdBy: user.uid, used: 0 }); }
+        else { const nr = await addDoc(collection(db, c.col), { ...base, createdAt: serverTimestamp(), createdBy: user.uid }); newId = nr.id; }
+        if (c.costKey && cost != null) await setDoc(doc(db, "productCosts", r ? r.id : newId), { buyingPrice: cost, updatedAt: serverTimestamp(), updatedBy: user.uid }, { merge: true });
+        d.close(); note("Saved."); load(); } catch (x) { console.error(x); er("Could not save (rules or connection)."); $("#fs").disabled = false; } };
+    d.showModal();
+  }
+  $("#q").oninput = e => { q = e.target.value.toLowerCase(); draw(); }; if (c.add) $("#add").onclick = () => form(null); load();
+}
+
+/* ---------- Send notification to all customers ---------- */
+async function notify(view) {
+  view.innerHTML = `<div class="head"><h1>Send notification</h1></div><div id="msg"></div><form class="card" id="nf" style="max-width:640px"><p class="crumb">Sends a message to every customer who is not blocked. It appears in the bell icon and under Notifications in their account.</p><div class="fg"><div class="w"><label for="nt">Title *</label><input id="nt" maxlength="80"></div><div class="w"><label for="nb">Message *</label><textarea id="nb" rows="4" maxlength="500"></textarea></div></div><div class="act"><button class="solid" id="ns">Send to all customers</button></div></form><h2 style="margin:24px 0 10px;font-size:16px">Recently sent</h2><div class="card wrapx" id="nh"><div class="empty">Loading…</div></div>`;
+  const note = (t, bad) => $("#msg").innerHTML = t ? `<div class="${bad ? "alert" : "okmsg"}" role="alert">${esc(t)}</div>` : "";
+  const hist = async () => { try { const l = (await getDocs(query(collection(db, "broadcasts"), orderBy("createdAt", "desc"), limit(15)))).docs.map(x => x.data()); $("#nh").innerHTML = l.length ? `<table><tr><th>Date</th><th>Title</th><th>Sent to</th></tr>${l.map(b => `<tr><td>${esc(fd(b.createdAt))}</td><td>${esc(b.title)}</td><td>${esc(b.count)}</td></tr>`).join("")}</table>` : `<div class="empty">Nothing sent yet.</div>`; } catch (e) { console.error(e); $("#nh").innerHTML = `<div class="empty">History unavailable.</div>`; } };
+  hist();
+  $("#nf").onsubmit = async e => { e.preventDefault(); const title = $("#nt").value.trim(), body = $("#nb").value.trim(); if (title.length < 3 || body.length < 5) return note("Enter a title and a message.", 1);
+    if (!confirm(`Send "${title}" to all customers now? This cannot be undone.`)) return; $("#ns").disabled = true; note("");
+    try { const ids = []; let last = null; for (;;) { const s = await getDocs(query(collection(db, "users"), limit(500), ...(last ? [startAfter(last)] : []))); s.docs.forEach(x => { if (!x.data().blocked) ids.push(x.id); }); last = s.docs[s.docs.length - 1]; if (s.size < 500) break; }
+      if (!ids.length) { $("#ns").disabled = false; return note("There are no customers to notify.", 1); }
+      for (let i = 0; i < ids.length; i += 400) { const wb = writeBatch(db); ids.slice(i, i + 400).forEach(u => wb.set(doc(collection(db, "users", u, "notifications")), { title, body, read: false, createdAt: serverTimestamp(), sentBy: user.uid })); await wb.commit(); }
+      await addDoc(collection(db, "broadcasts"), { title, body, count: ids.length, createdAt: serverTimestamp(), sentBy: user.uid });
+      $("#nf").reset(); note(`Sent to ${ids.length} customer${ids.length === 1 ? "" : "s"}.`); hist(); } catch (x) { console.error(x); note("Sending failed part-way (rules or connection). Some customers may already have received it.", 1); }
+    $("#ns").disabled = false; };
+}
+
+/* ---------- Dashboard ---------- */
+async function dashboard(view) {
+  view.innerHTML = `<div class="head"><h1>Dashboard</h1></div><div class="grid">${'<div class="sk"></div>'.repeat(8)}</div>`;
+  const d = +(window._range ?? 7), from = new Date(); d ? from.setTime(Date.now() - d * 864e5) : from.setHours(0, 0, 0, 0);
+  const cnt = q => getCountFromServer(q).then(s => s.data().count), P = collection(db, "products");
+  const [oq, cust, prod, low, oos, ref_, rev_] = await Promise.allSettled([getDocs(query(collection(db, "orders"), where("createdAt", ">=", Timestamp.fromDate(from)), orderBy("createdAt", "desc"), limit(500))), cnt(collection(db, "users")), cnt(P), cnt(query(P, where("stock", ">", 0), where("stock", "<=", 5))), cnt(query(P, where("stock", "<=", 0))), cnt(query(collection(db, "refunds"), where("status", "==", "requested"))), cnt(query(collection(db, "reviews"), where("status", "==", "pending")))]);
+  const v = r => r.status === "fulfilled" ? r.value : "—", errs = [oq, cust, prod, low, oos, ref_, rev_].filter(r => r.status === "rejected"); errs.forEach(r => console.error(r.reason));
+  const orders = oq.status === "fulfilled" ? oq.value.docs.map(x => ({ id: x.id, ...x.data() })) : [], by = s => orders.filter(o => [].concat(s).includes(o.status)).length;
+  const rev = orders.filter(o => PAID.includes(o.status)).reduce((a, o) => a + (+o.grandTotal || 0), 0);
+  const kpi = [["Revenue", oq.status === "fulfilled" ? inr(rev) : "—"], ["Orders", orders.length], ["Paid, to process", by("PAID")], ["Processing", by(["PROCESSING", "READY_TO_SHIP"])], ["Shipped", by(["SHIPPED", "OUT_FOR_DELIVERY"])], ["Delivered", by(["DELIVERED", "COMPLETED"])], ["Cancelled / failed", by(BAD)], ["Customers", v(cust)], ["Products", v(prod)], ["Low stock (≤5)", v(low)], ["Out of stock", v(oos)], ["Refund requests", v(ref_)], ["Reviews to moderate", v(rev_)]];
+  const days = {}; for (let i = 0; i < Math.max(d, 1); i++) days[new Date(from.getTime() + i * 864e5).toISOString().slice(5, 10)] = 0;
+  orders.filter(o => PAID.includes(o.status) && o.createdAt?.toDate).forEach(o => { const k = o.createdAt.toDate().toISOString().slice(5, 10); if (k in days) days[k] += +o.grandTotal || 0; });
+  const max = Math.max(...Object.values(days), 1), sel = x => (window._range ?? 7) == x ? " selected" : "";
+  view.innerHTML = `<div class="head"><h1>Dashboard</h1><select id="range" class="ghost" aria-label="Date range"><option value="0"${sel(0)}>Today</option><option value="7"${sel(7)}>Last 7 days</option><option value="30"${sel(30)}>Last 30 days</option></select></div>${errs.length ? `<div class="alert" role="alert">${errs.length} metric(s) could not load (rules, missing index or connection). See the browser console.</div>` : ""}
+  <div class="grid">${kpi.map(k => `<div class="card kpi"><small>${esc(k[0])}</small><strong>${esc(k[1])}</strong></div>`).join("")}</div>
+  <div class="two"><div class="card"><strong>Revenue by day</strong>${orders.length ? `<div class="bars">${Object.entries(days).map(([k, x]) => `<div style="height:${x / max * 100}%" title="${esc(k)}: ${inr(x)}"></div>`).join("")}</div><div class="axis">${Object.keys(days).map(k => `<span>${d > 14 ? "" : esc(k)}</span>`).join("")}</div>` : `<div class="empty">No orders in this period.</div>`}</div>
+  <div class="card"><strong>Recent orders</strong>${orders.length ? `<div class="wrapx"><table><tr><th>Order</th><th>Total</th><th>Status</th></tr>${orders.slice(0, 8).map(o => `<tr><td>${esc(o.orderNumber || o.id.slice(0, 8))}</td><td>${inr(o.grandTotal)}</td><td><span class="badge ${bc(o.status)}">${esc(o.status)}</span></td></tr>`).join("")}</table></div>` : `<div class="empty">Nothing yet.</div>`}</div></div>`;
+  $("#range").onchange = e => { window._range = e.target.value; dashboard(view); };
+}
+
+/* ---------- Reports (computed from orders; CSV export) ---------- */
+async function reports(view) {
+  const d = +(window._rr ?? 30), from = new Date(Date.now() - d * 864e5), sel = x => d == x ? " selected" : "";
+  view.innerHTML = `<div class="head"><h1>Reports</h1><div><select id="rr" class="ghost" aria-label="Period"><option value="7"${sel(7)}>Last 7 days</option><option value="30"${sel(30)}>Last 30 days</option><option value="90"${sel(90)}>Last 90 days</option></select><button class="ghost" id="csv">Download CSV</button></div></div><div class="grid">${'<div class="sk"></div>'.repeat(4)}</div>`;
+  $("#rr").onchange = e => { window._rr = e.target.value; reports(view); };
+  let orders; try { orders = (await getDocs(query(collection(db, "orders"), where("createdAt", ">=", Timestamp.fromDate(from)), orderBy("createdAt", "desc"), limit(1000)))).docs.map(x => x.data()); } catch (e) { console.error(e); return view.querySelector(".grid").outerHTML = `<div class="alert">Could not load orders (rules or missing index).</div>`; }
+  const paid = orders.filter(o => PAID.includes(o.status)), rev = paid.reduce((a, o) => a + (+o.grandTotal || 0), 0), day = {}, prod = {}, st = {};
+  orders.forEach(o => st[o.status] = (st[o.status] || 0) + 1);
+  paid.forEach(o => { const k = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleDateString("sv") : "?"; (day[k] ||= { n: 0, r: 0 }); day[k].n++; day[k].r += +o.grandTotal || 0; (o.items || []).forEach(i => { const p = prod[i.name] ||= { q: 0, r: 0 }; p.q += +i.qty || 0; p.r += (+i.qty || 0) * (+i.price || 0); }); });
+  const top = Object.entries(prod).sort((a, b) => b[1].r - a[1].r).slice(0, 10), days = Object.entries(day).sort().reverse();
+  view.querySelector(".grid").outerHTML = `<div class="grid"><div class="card kpi"><small>Revenue (paid orders)</small><strong>${inr(rev)}</strong></div><div class="card kpi"><small>Orders (all)</small><strong>${orders.length}</strong></div><div class="card kpi"><small>Paid orders</small><strong>${paid.length}</strong></div><div class="card kpi"><small>Avg order value</small><strong>${paid.length ? inr(rev / paid.length) : "—"}</strong></div></div>
+  <div class="two"><div class="card wrapx"><strong>Sales by day</strong>${days.length ? `<table><tr><th>Date</th><th>Orders</th><th>Revenue</th></tr>${days.map(([k, x]) => `<tr><td>${esc(k)}</td><td>${x.n}</td><td>${inr(x.r)}</td></tr>`).join("")}</table>` : `<div class="empty">No paid orders in this period.</div>`}</div>
+  <div><div class="card wrapx" style="margin-bottom:14px"><strong>Top products</strong>${top.length ? `<table><tr><th>Product</th><th>Qty</th><th>Revenue</th></tr>${top.map(([n, x]) => `<tr><td>${esc(n)}</td><td>${x.q}</td><td>${inr(x.r)}</td></tr>`).join("")}</table>` : `<div class="empty">No item data.</div>`}</div>
+  <div class="card wrapx"><strong>Orders by status</strong><table>${Object.entries(st).map(([k, n]) => `<tr><td><span class="badge ${bc(k)}">${esc(k)}</span></td><td>${n}</td></tr>`).join("") || `<tr><td class="empty">None</td></tr>`}</table></div></div></div>`;
+  $("#csv").onclick = () => { const q = s => `"${String(s).replace(/"/g, '""').replace(/^([=+\-@])/, "'$1")}"`, t = ["Date,Orders,Revenue", ...days.map(([k, x]) => [q(k), x.n, x.r].join(","))].join("\n"), a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([t], { type: "text/csv" })); a.download = `sales-${d}d.csv`; a.click(); URL.revokeObjectURL(a.href); };
+}
+
+let idle; const resetIdle = () => { clearTimeout(idle); idle = setTimeout(() => signOut(auth).then(() => location.reload()), 30 * 60 * 1000); };
+["click", "keydown", "mousemove", "touchstart"].forEach(e => addEventListener(e, () => ROLE && resetIdle(), { passive: true }));
+</script></body></html>
