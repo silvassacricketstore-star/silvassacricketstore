@@ -1,2 +1,5 @@
 
 Cred
+
+# Firebase local cache
+.firebase/

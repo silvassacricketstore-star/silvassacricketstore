@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://silvassacricketstore.com/</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+
+    <!--
+    Add ONLY pages that actually exist on your site (each returns 200 OK).
+    Uncomment and edit the examples below:
+
+    <url>
+        <loc>https://silvassacricketstore.com/cricket-bats</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+        <loc>https://silvassacricketstore.com/cricket-balls</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+        <loc>https://silvassacricketstore.com/cricket-kits</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+        <loc>https://silvassacricketstore.com/about</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+        <loc>https://silvassacricketstore.com/contact</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+    -->
+</urlset>

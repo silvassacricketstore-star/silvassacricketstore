@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin · SCS</title><link rel="icon" href="../Assets/logo/logo.png"><script>/* trims the logo's empty margins, then uses it for the tab icon and the on-page logo */
+<title>Admin · SCS</title><link rel="icon" href="../Assets/Logo/Logo.png"><script>/* trims the logo's empty margins, then uses it for the tab icon and the on-page logo */
 (function(){var i=new Image();i.onload=function(){try{var s=Math.min(1,256/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.max(1,Math.round(i.naturalWidth*s)),h=Math.max(1,Math.round(i.naturalHeight*s)),t=document.createElement('canvas');t.width=w;t.height=h;var tx=t.getContext('2d');tx.drawImage(i,0,0,w,h);var d=tx.getImageData(0,0,w,h).data,x0=w,y0=h,x1=-1,y1=-1,y,x,k;for(y=0;y<h;y++)for(x=0;x<w;x++){k=(y*w+x)*4;if(d[k+3]>20&&!(d[k]>240&&d[k+1]>240&&d[k+2]>240)){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}if(x1<0)return;var cw=x1-x0+1,ch=y1-y0+1,m=Math.max(cw,ch),c=document.createElement('canvas');c.width=c.height=64;var cx=c.getContext('2d'),f=62/m;cx.drawImage(t,x0,y0,cw,ch,(64-cw*f)/2,(64-ch*f)/2,cw*f,ch*f);var l=document.querySelector('link[rel=icon]');l.type='image/png';l.href=c.toDataURL('image/png');
 var rx=x0/s,ry=y0/s,rw=cw/s,rh=ch/s,q=Math.min(1,600/Math.max(rw,rh)),p=document.createElement('canvas');p.width=Math.max(1,Math.round(rw*q));p.height=Math.max(1,Math.round(rh*q));p.getContext('2d').drawImage(i,rx,ry,rw,rh,0,0,p.width,p.height);window.SCS_LOGO=p.toDataURL('image/png');
-var ap=function(){document.querySelectorAll('.logo img:not([data-c])').forEach(function(e){e.dataset.c=1;e.src=window.SCS_LOGO})};ap();new MutationObserver(ap).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}};i.src='../Assets/logo/logo.png'})();</script><meta name="robots" content="noindex">
+var ap=function(){document.querySelectorAll('.logo img:not([data-c])').forEach(function(e){e.dataset.c=1;e.src=window.SCS_LOGO})};ap();new MutationObserver(ap).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}};i.src='../Assets/Logo/Logo.png'})();</script><meta name="robots" content="noindex">
 <style>
 :root{--side:#0F1B2D;--side2:#17263B;--green:#0B6B45;--lime:#C4E86B;--bg:#F4F6F5;--line:#E1E6E3;--ink:#10201A;--mut:#6B766F;--err:#B3261E;--amb:#B26A00}
 *{box-sizing:border-box;margin:0}body{font:14px/1.5 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg)}button,select,input,textarea{font:inherit}
@@ -30,12 +30,15 @@ dialog{border:0;border-radius:12px;padding:22px;width:min(660px,94vw);max-height
 .th{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.thumbs span{position:relative}.thumbs button{position:absolute;top:-6px;right:-6px;border:0;background:var(--err);color:#fff;border-radius:50%;width:18px;height:18px;cursor:pointer;line-height:1}.thumbs .th{width:64px;height:64px}
 dl{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;margin-top:12px}dt{color:var(--mut)}dd{word-break:break-word}
 :focus-visible{outline:3px solid rgba(11,107,69,.4);outline-offset:2px}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.stp{display:flex;gap:6px;margin:14px 0;flex-wrap:wrap}.stp button{flex:1;min-width:104px;padding:10px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font-weight:600;transition:background .2s,transform .15s}.stp button:hover:not(:disabled){border-color:var(--green);transform:translateY(-1px)}.stp button.done{background:#DDF3E7;color:var(--green);border-color:#bfe3cf}.stp button.now{background:var(--green);color:#fff;border-color:var(--green)}.stp button:disabled{cursor:default}
+.otpb{border:1px solid var(--green);border-radius:10px;padding:14px;margin:12px 0;background:#F3F9F5}.otpb .tm{font-weight:700;font-variant-numeric:tabular-nums}.otpb .tm.x{color:var(--err)}
 </style></head>
 <body><div id="root" class="empty">Checking access…</div><dialog id="dlg"></dialog>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, collection, query, where, orderBy, limit, startAfter, writeBatch, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, doc, getCountFromServer, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, collection, query, where, orderBy, limit, startAfter, writeBatch, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, doc, getCountFromServer, Timestamp, serverTimestamp, arrayUnion, deleteField } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const app = initializeApp({ apiKey: "AIzaSyBuhC88hfPaYatMF2eU8BCk9LmAMrheufE", authDomain: "silvassacricketstore-4557c.firebaseapp.com", projectId: "silvassacricketstore-4557c", storageBucket: "silvassacricketstore-4557c.firebasestorage.app", messagingSenderId: "441799530052", appId: "1:441799530052:web:6fc80bc509b1bad00f4e11" });
 const auth = getAuth(app), db = getFirestore(app);
@@ -54,16 +57,16 @@ const inr = n => isFinite(n) && n !== null && n !== "" ? "₹" + Number(n).toLoc
 const fd = t => t?.toDate ? t.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "";
 const toIn = t => t?.toDate ? t.toDate().toLocaleDateString("sv") : "";
 const fromIn = (s, end) => Timestamp.fromDate(new Date(s + (end ? "T23:59:59" : "T00:00:00")));
-const bc = s => /^(PAID|DELIVERED|COMPLETED|active|approved|answered|refunded|delivered|captured)$/i.test(s) ? "ok" : /^(FAILED|CANCELLED|EXPIRED|rejected|failed|rto|archived)$/i.test(s) ? "bad" : "warn";
+const bc = s => /^(PAID|DELIVERED|COMPLETED|active|approved|answered|resolved|refunded|delivered|captured)$/i.test(s) ? "ok" : /^(FAILED|CANCELLED|EXPIRED|rejected|failed|rto|archived)$/i.test(s) ? "bad" : "warn";
 const ROLE_NAMES = { owner: "Super Admin", manager: "Manager", inventory: "Inventory Manager", support: "Support Staff", accountant: "Accountant" };
 const PAID = ["PAID","PROCESSING","READY_TO_SHIP","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","COMPLETED","NDR","RETURN_REQUESTED","RTO_INITIATED"], BAD = ["FAILED","EXPIRED","CANCELLED"];
 // Allowed next states. PAID is never set by hand: payment must be confirmed by the payment gateway, not a button.
-const NEXT = { PAID: ["PROCESSING","CANCELLED"], PROCESSING: ["READY_TO_SHIP","CANCELLED"], READY_TO_SHIP: ["SHIPPED"], SHIPPED: ["OUT_FOR_DELIVERY","RTO_INITIATED"], OUT_FOR_DELIVERY: ["DELIVERED","NDR"], NDR: ["OUT_FOR_DELIVERY","RTO_INITIATED"], DELIVERED: ["COMPLETED","RETURN_REQUESTED"] };
+const NEXT = { PAID: ["PROCESSING","CANCELLED"], PLACED: ["PROCESSING","CANCELLED"], PROCESSING: ["READY_TO_SHIP","CANCELLED"], READY_TO_SHIP: ["SHIPPED"], SHIPPED: ["OUT_FOR_DELIVERY","RTO_INITIATED"], OUT_FOR_DELIVERY: ["DELIVERED","NDR"], NDR: ["OUT_FOR_DELIVERY","RTO_INITIATED"], DELIVERED: ["COMPLETED","RETURN_REQUESTED"] };
 const A = "owner,manager,inventory,support,accountant";
 
 /* ---------- module configs: [key,label,type,required,options] ---------- */
 const CFG = {
-  orders: { t: "Orders", col: "orders", roles: "owner,manager,support", order: ["createdAt", "desc"], sel: "status", opts: r => [r.d.status, ...(NEXT[r.d.status] || [])].filter(Boolean),
+  orders: { t: "Orders", col: "orders", roles: "owner,manager,support", order: ["createdAt", "desc"], sel: "status", opts: r => [r.d.status, ...(NEXT[r.d.status] || [])].filter(o => o && (o !== "DELIVERED" || o === r.d.status)),
     cols: [["_id", "Order"], ["customerName", "Customer"], ["grandTotal", "Total", "inr"], ["paymentMethod", "Payment"], ["paymentStatus", "Paid?", "badge"], ["status", "Status", "sel"], ["createdAt", "Date", "date"]] },
   products: { t: "Products", col: "products", roles: "owner,manager,inventory", add: 1, edit: 1, del: 1, costKey: "buyingPrice", mirror: ["price", "mrp"], // buying price lives in productCosts (staff-only); MRP is public
    
@@ -73,9 +76,14 @@ const CFG = {
   inventory: { t: "Inventory", col: "products", roles: "owner,manager,inventory", edit: 1, cols: [["_img", "", "img"], ["name", "Product"], ["sku", "SKU"], ["category", "Category"], ["stock", "In stock", "stock"]], fields: [["stock", "Stock quantity", "number", 1]] },
   customers: { t: "Customers", col: "users", roles: "owner,manager,support", tog: "blocked", cols: [["name", "Name"], ["email", "Email"], ["phone", "Phone"], ["createdAt", "Joined", "date"], ["blocked", "Account", "bool"]] },
   payments: { t: "Payments", col: "orders", roles: "owner,accountant", order: ["createdAt", "desc"], cols: [["_id", "Order"], ["paymentId", "Payment ID"], ["paymentMethod", "Method"], ["paymentStatus", "Status", "badge"], ["grandTotal", "Amount", "inr"], ["createdAt", "Date", "date"]] },
-  refunds: { t: "Refunds", col: "refunds", roles: "owner,manager,accountant,support", add: 1, edit: 1, sel: "status", opts: () => ["requested", "approved", "rejected", "refunded", "failed"],
-    cols: [["orderId", "Order"], ["amount", "Amount", "inr"], ["reason", "Reason"], ["status", "Status", "sel"], ["createdAt", "Date", "date"]],
-    fields: [["orderId", "Order ID", "text", 1], ["amount", "Refund amount (₹)", "number", 1], ["status", "Status", "select", 1, ["requested", "approved", "rejected", "refunded", "failed"]], ["reason", "Reason", "textarea", 0, "w"]] },
+  refunds: { t: "Refunds", col: "refunds", roles: "owner,manager,accountant,support", add: 1, edit: 1, sel: "status", opts: () => ["requested", "in review", "approved", "rejected", "refunded", "failed"],
+    ctx: v => `<div class="crumb" style="margin:6px 0 12px;white-space:pre-line"><b>Customer:</b> ${esc(v.userName || "—")} ${esc(v.email || "")}
+<b>Product:</b> ${esc(v.productName || "—")} × ${esc(v.qty || "")} · <b>Payment:</b> ${esc(v.paymentMethod || "—")}
+<b>Reason:</b> ${esc(v.reason || "—")}
+<b>Customer note:</b> ${esc(v.description || "—")}
+Refund only after approval, via the payment gateway; then set status to Refunded.</div>`,
+    cols: [["orderId", "Order"], ["productName", "Product"], ["userName", "Customer"], ["amount", "Amount", "inr"], ["reason", "Reason"], ["status", "Status", "sel"], ["createdAt", "Date", "date"]],
+    fields: [["orderId", "Order ID", "text", 1], ["amount", "Refund amount (₹)", "number", 1], ["status", "Status", "select", 1, ["requested", "in review", "approved", "rejected", "refunded", "failed"]], ["reason", "Reason", "textarea", 0, "w"], ["adminNote", "Note to customer (shown in Track My Order)", "textarea", 0, "w"]] },
   shipping: { t: "Shipping", col: "shipments", roles: "owner,manager", add: 1, edit: 1, del: 1,
     cols: [["orderId", "Order"], ["courier", "Courier"], ["awb", "AWB"], ["status", "Status", "badge"], ["expectedDelivery", "Expected", "date"]],
     fields: [["orderId", "Order ID", "text", 1], ["courier", "Courier", "text", 1], ["awb", "AWB / tracking no.", "text"], ["trackingUrl", "Tracking URL (https)", "text"], ["status", "Status", "select", 1, ["pending", "picked_up", "in_transit", "out_for_delivery", "delivered", "ndr", "rto"]], ["expectedDelivery", "Expected delivery", "date"]],
@@ -90,6 +98,11 @@ const CFG = {
     cols: [["productName", "Product"], ["userName", "Customer"], ["text", "Question"], ["status", "Status", "badge"], ["createdAt", "Date", "date"]],
     fields: [["answer", "Answer (shown publicly on the product page)", "textarea", 0, "w"], ["status", "Status", "select", 1, ["pending", "answered", "rejected"]]],
     check: d => d.status === "answered" && !d.answer ? "Write an answer before marking it answered." : "" },
+  support: { t: "Support requests", col: "supportTickets", roles: "owner,manager,support", edit: 1, order: ["createdAt", "desc"],
+    cols: [["userName", "Customer"], ["email", "Email"], ["category", "Category"], ["subject", "Subject"], ["message", "Description"], ["orderId", "Order ID"], ["createdAt", "Submitted", "date"], ["status", "Status", "badge"]],
+    fields: [["reply", "Reply to customer (the customer sees this under My requests)", "textarea", 0, "w"], ["status", "Status", "select", 1, ["Pending", "In Progress", "Resolved"]]],
+    ctx: v => `<div class="note" style="margin:8px 0;white-space:pre-line"><b>${esc(v.userName || "Customer")}</b> · ${esc(v.email || "")} · ${esc(v.category || "General")} · Order: ${esc(v.orderId || "—")}\n<b>${esc(v.subject || "")}</b>\n${esc(v.message || "")}</div>`,
+    extra: (o, r) => o.reply && o.reply !== (r?.d.reply || "") ? { repliedAt: serverTimestamp(), repliedBy: user.uid } : {} },
   alerts: { t: "Alerts", col: "alerts", roles: "owner,manager,inventory", del: 1, order: ["createdAt", "desc"],
     cols: [["productName", "Product"], ["type", "Alert", "badge"], ["email", "Customer email"], ["createdAt", "Date", "date"]] },
   faqs: { t: "FAQs", col: "faqs", roles: "owner,manager", add: 1, edit: 1, del: 1, order: ["order", "asc"],
@@ -97,7 +110,8 @@ const CFG = {
     fields: [["question", "Question", "text", 1], ["answer", "Answer", "textarea", 1, "w"], ["category", "Category (e.g. Shipping, Returns, Payment)", "text"], ["order", "Display order (1 shows first)", "number", 1], ["active", "Visibility", "yn", 1]],
     check: d => d.question.length < 5 ? "Question is too short." : d.answer.length < 5 ? "Answer is too short." : d.order < 0 ? "Order cannot be negative." : "" }
 };
-const MODULES = [["dashboard", "Dashboard", "▦", A], ["orders", "Orders", "▤"], ["products", "Products", "◧"], ["inventory", "Inventory", "▥"], ["customers", "Customers", "☺"], ["payments", "Payments", "₹"], ["refunds", "Refunds", "↺"], ["shipping", "Shipping", "➤"], ["coupons", "Coupons", "%"], ["reviews", "Reviews", "★"], ["questions", "Questions", "❓"], ["alerts", "Alerts", "🔔"], ["notify", "Send notification", "✉", "owner,manager"], ["faqs", "FAQs", "?"], ["reports", "Reports", "▨", "owner,manager,accountant"]].map(m => [m[0], m[1], m[2], m[3] || CFG[m[0]].roles]);
+const refTell = (d, st) => d.uid && addDoc(collection(db, "users", d.uid, "notifications"), { title: "Return / refund update", body: `Your request for ${d.productName || "your order"} (order ${d.orderId || ""}) is now: ${st}.`, read: false, createdAt: serverTimestamp(), sentBy: user.uid }).catch(console.error);
+const MODULES = [["dashboard", "Dashboard", "▦", A], ["orders", "Orders", "▤"], ["fulfil", "Order status", "✔", "owner,manager,support"], ["products", "Products", "◧"], ["inventory", "Inventory", "▥"], ["customers", "Customers", "☺"], ["payments", "Payments", "₹"], ["refunds", "Refunds", "↺"], ["shipping", "Shipping", "➤"], ["policies", "Policies", "§", "owner,manager"], ["coupons", "Coupons", "%"], ["reviews", "Reviews", "★"], ["support", "Support", "🎧"], ["questions", "Questions", "❓"], ["alerts", "Alerts", "🔔"], ["notify", "Send notification", "✉", "owner,manager"], ["faqs", "FAQs", "?"], ["reports", "Reports", "▨", "owner,manager,accountant"]].map(m => [m[0], m[1], m[2], m[3] || CFG[m[0]].roles]);
 let ROLE = null, user = null;
 
 /* ---------- access gate (uses the store's sign-in; role from adminUsers/{uid}) ---------- */
@@ -117,7 +131,7 @@ onAuthStateChanged(auth, async u => {
 addEventListener("hashchange", () => ROLE && route());
 function shell() {
   const mods = MODULES.filter(m => m[3].split(",").includes(ROLE));
-  $("#root").className = ""; $("#root").innerHTML = `<div class="app" id="app"><aside class="side"><div class="logo"><img src="../Assets/logo/logo.png" alt="SCS logo" onerror="this.style.display='none'"><span>SilvassaCricket<br><small style="font-weight:400;opacity:.7">Admin</small></span></div><nav class="nav" aria-label="Main">${mods.map(m => `<a href="#${m[0]}" data-m="${m[0]}" title="${esc(m[1])}"><b>${m[2]}</b><span>${esc(m[1])}</span></a>`).join("")}</nav></aside>
+  $("#root").className = ""; $("#root").innerHTML = `<div class="app" id="app"><aside class="side"><div class="logo"><img src="../Assets/Logo/Logo.png" alt="SCS logo" onerror="this.style.display='none'"><span>SilvassaCricket<br><small style="font-weight:400;opacity:.7">Admin</small></span></div><nav class="nav" aria-label="Main">${mods.map(m => `<a href="#${m[0]}" data-m="${m[0]}" title="${esc(m[1])}"><b>${m[2]}</b><span>${esc(m[1])}</span></a>`).join("")}</nav></aside>
   <div class="main"><header class="top"><button class="ghost" id="col" aria-label="Collapse sidebar">☰</button><div class="crumb" id="crumb"></div><div class="grow"></div><span class="badge ok">${esc(ROLE_NAMES[ROLE])}</span><span class="crumb">${esc(user.email || "")}</span><button class="ghost" id="out">Sign out</button></header><main class="pad" id="view"></main></div></div>`;
   $("#col").onclick = () => $("#app").classList.toggle("min"); $("#out").onclick = () => signOut(auth).then(() => location.reload());
 }
@@ -125,7 +139,7 @@ function route() {
   const id = (location.hash || "#dashboard").slice(1), m = MODULES.find(x => x[0] === id) || MODULES[0], view = $("#view");
   document.querySelectorAll(".nav a").forEach(a => a.classList.toggle("on", a.dataset.m === m[0])); $("#crumb").innerHTML = `Admin / <b>${esc(m[1])}</b>`;
   if (!m[3].split(",").includes(ROLE)) return view.innerHTML = `<div class="card empty"><h1>No access</h1><p>Your role cannot open this page.</p></div>`;
-  ({ dashboard, reports, notify })[m[0]] ? ({ dashboard, reports, notify })[m[0]](view) : crud(view, m[0]);
+  ({ dashboard, reports, notify, fulfil, policies })[m[0]] ? ({ dashboard, reports, notify, fulfil, policies })[m[0]](view) : crud(view, m[0]);
 }
 
 /* ---------- generic list + add / edit / delete ---------- */
@@ -140,6 +154,7 @@ async function crud(view, id) {
       const s = await getDocs(query(collection(db, c.col), ...qs));
       rows = next ? rows.concat(s.docs.map(x => ({ id: x.id, d: x.data() }))) : s.docs.map(x => ({ id: x.id, d: x.data() }));
       last = s.docs[s.docs.length - 1]; more = s.size === 50;
+      if (c.col === "supportTickets") { const need = [...new Set(rows.filter(r => !r.d.userName && r.d.uid).map(r => r.d.uid))], nm = {}; await Promise.all(need.map(async u => { try { const p = (await getDoc(doc(db, "users", u))).data() || {}; nm[u] = p.name || p.displayName || p.fullName || ""; } catch (e) { console.error(e); } })); rows.forEach(r => { if (!r.d.userName) r.d.userName = nm[r.d.uid] || (r.d.email || "").split("@")[0] || "Customer"; }); }
       if (c.costKey) { try { const m = {}; (await getDocs(query(collection(db, "productCosts"), limit(1000)))).docs.forEach(x => m[x.id] = x.data().buyingPrice); rows.forEach(r => r.cost = m[r.id]); } catch (e) { console.error("costs:", e); } }
       draw();
     } catch (e) { console.error(e); $("#tb").innerHTML = `<div class="alert">Could not load. Check Firestore rules or create the index shown in the console.</div>`; }
@@ -164,8 +179,8 @@ async function crud(view, id) {
     const tb = $("#tb");
     tb.querySelectorAll("[data-v]").forEach(b => b.onclick = () => viewDoc(find(b.dataset.v)));
     tb.querySelectorAll("[data-e]").forEach(b => b.onclick = () => form(find(b.dataset.e)));
-    tb.querySelectorAll("[data-s]").forEach(s => s.onchange = async () => { const r = find(s.dataset.s); if (!confirm(`Change ${c.sel} to "${s.value}"?`)) return draw();
-      try { await updateDoc(doc(db, c.col, r.id), { [c.sel]: s.value, updatedAt: serverTimestamp(), updatedBy: user.uid }); r.d[c.sel] = s.value; note("Updated."); } catch (e) { console.error(e); note("Update failed (rules or connection).", 1); } draw(); });
+    tb.querySelectorAll("[data-s]").forEach(s => s.onchange = async () => { const r = find(s.dataset.s); if (!confirm(`Change ${c.sel} to "${s.value}"?` + (c.col === "refunds" && s.value === "refunded" ? "\n\nOnly mark Refunded after the refund has actually been processed through the payment gateway." : ""))) return draw();
+      try { await updateDoc(doc(db, c.col, r.id), { [c.sel]: s.value, updatedAt: serverTimestamp(), updatedBy: user.uid }); r.d[c.sel] = s.value; if (c.col === "refunds") refTell(r.d, s.value); note("Updated."); } catch (e) { console.error(e); note("Update failed (rules or connection).", 1); } draw(); });
     tb.querySelectorAll("[data-t]").forEach(b => b.onclick = async () => { const r = find(b.dataset.t), v = !r.d[c.tog]; if (!confirm(`${v ? "Block" : "Unblock"} this customer?`)) return;
       try { await updateDoc(doc(db, c.col, r.id), { [c.tog]: v, [c.tog + "At"]: serverTimestamp(), [c.tog + "By"]: user.uid }); r.d[c.tog] = v; note(v ? "Customer blocked." : "Customer unblocked."); } catch (e) { console.error(e); note("Failed (rules or connection).", 1); } draw(); });
     tb.querySelectorAll("[data-d]").forEach(b => b.onclick = async () => { const r = find(b.dataset.d); if (!confirm(`Delete "${r.d.name || r.d.code || r.d.question || r.id}" permanently? This cannot be undone.`)) return;
@@ -195,7 +210,7 @@ async function crud(view, id) {
       else if (t === "date") inp = `<input id="f_${k}" type="date" value="${esc(toIn(val))}">`;
       else inp = `<input id="f_${k}" type="${num ? "number" : "text"}"${num ? ' min="0" step="any"' : ""} value="${esc(val)}"${t === "upper" && r ? " readonly" : ""} maxlength="200">`;
       return `<div class="${w.trim()}">${lab}${inp}</div>`; };
-    d.innerHTML = `<form id="ff" novalidate><h2>${r ? "Edit" : "Add"} ${esc(c.t.replace(/s$/, ""))}</h2><div class="fg">${c.fields.map(fld).join("")}</div><div id="fe" class="alert" hidden role="alert"></div><div class="act"><button type="button" class="ghost" id="fc">Cancel</button><button class="solid" id="fs">Save</button></div></form>`;
+    d.innerHTML = `<form id="ff" novalidate><h2>${r ? "Edit" : "Add"} ${esc(c.t.replace(/s$/, ""))}</h2>${c.ctx ? c.ctx(v) : ""}<div class="fg">${c.fields.map(fld).join("")}</div><div id="fe" class="alert" hidden role="alert"></div><div class="act"><button type="button" class="ghost" id="fc">Cancel</button><button class="solid" id="fs">Save</button></div></form>`;
     Object.keys(IM).forEach(k => { const th = () => { const t = $("#th_" + k); t.innerHTML = IM[k].map((u, i) => `<span><img class="th" src="${esc(u)}" alt=""><button type="button" data-r="${i}" aria-label="Remove image">×</button></span>`).join(""); t.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { IM[k].splice(+b.dataset.r, 1); th(); }); }; th();
       $("#fi_" + k).onchange = async e => { const up = $("#up_" + k); for (const f of [...e.target.files]) { if (!f.type.startsWith("image/") || f.size > 5e6) { up.textContent = "Images only, max 5 MB each."; continue; }
         try { up.textContent = "Uploading " + f.name + "…"; IM[k].push(await uploadImage(f)); th(); up.textContent = ""; } catch (x) { console.error(x); up.textContent = "Upload failed: " + x.message; } } e.target.value = ""; }; });
@@ -212,8 +227,8 @@ async function crud(view, id) {
       if (c.mirror) out[c.mirror[0]] = out[c.mirror[1]]; // keeps a "price" field (= MRP) so the storefront can read one customer price
       if (cost != null && out.mrp != null && out.mrp < cost && !confirm("MRP is lower than your buying price — you would sell at a loss. Save anyway?")) return;
       Object.keys(out).forEach(k => out[k] === null && delete out[k]); $("#fs").disabled = true;
-      try { let newId = null; const base = { ...out, updatedAt: serverTimestamp(), updatedBy: user.uid };
-        if (r) { await updateDoc(doc(db, c.col, r.id), base); }
+      try { let newId = null; const base = { ...out, ...(c.extra ? c.extra(out, r) : {}), updatedAt: serverTimestamp(), updatedBy: user.uid };
+        if (r) { await updateDoc(doc(db, c.col, r.id), base); if (c.col === "refunds" && out.status !== v.status) refTell(v, out.status); }
         else if (c.id) { const ref_ = doc(db, c.col, out[c.id]); if ((await getDoc(ref_)).exists()) { $("#fs").disabled = false; return er("That code already exists."); } await setDoc(ref_, { ...base, createdAt: serverTimestamp(), createdBy: user.uid, used: 0 }); }
         else { const nr = await addDoc(collection(db, c.col), { ...base, createdAt: serverTimestamp(), createdBy: user.uid }); newId = nr.id; }
         if (c.costKey && cost != null) await setDoc(doc(db, "productCosts", r ? r.id : newId), { buyingPrice: cost, updatedAt: serverTimestamp(), updatedBy: user.uid }, { merge: true });
@@ -221,6 +236,141 @@ async function crud(view, id) {
     d.showModal();
   }
   $("#q").oninput = e => { q = e.target.value.toLowerCase(); draw(); }; if (c.add) $("#add").onclick = () => form(null); load();
+}
+
+
+
+/* ---------- Policies: any number of policies in policies/{id}; published ones become buttons for customers (Track My Orders + Legal Policies) ---------- */
+async function policies(view) {
+  const DEF = { shipping: "Shipping & Delivery Policy", returns: "Return & Refund Policy", terms: "Terms & Conditions" }; let list = [], cur = null;
+  const msg = (t, b) => $("#pm").innerHTML = `<div class="${b ? "alert" : "okmsg"}" role="alert">${esc(t)}</div>`;
+  const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "policy";
+  const draw = async (note) => {
+    try { list = (await getDocs(query(collection(db, "policies"), limit(100)))).docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (+a.order || 0) - (+b.order || 0) || String(a.title).localeCompare(String(b.title))); } catch (e) { console.error(e); view.innerHTML = `<div class="alert">Could not load policies. Check Firestore rules.</div>`; return; }
+    const missing = Object.keys(DEF).filter(k => !list.some(p => p.id === k));
+    view.innerHTML = `<div class="head"><h1>Policies</h1><div>${missing.map(k => `<button class="ghost" data-q="${k}">+ ${esc(DEF[k])}</button>`).join(" ")} <button class="solid" id="pn">+ Add policy</button></div></div><div id="pm"></div>
+    <div class="card" style="padding:16px"><p class="crumb" style="margin-bottom:10px">Each published policy appears as a button for customers (Track My Orders and Legal Policies) and opens a popup with its content.</p>${list.length ? list.map(p => `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--line)"><b style="flex:1;min-width:160px">${esc(p.title)}</b><span class="badge ${p.published ? "ok" : "warn"}">${p.published ? "Published" : "Draft"}</span><span class="crumb">${p.updatedAt ? esc(fd(p.updatedAt)) : ""}</span><button class="ghost" data-e="${esc(p.id)}">Edit</button><button class="ghost" data-d="${esc(p.id)}">Delete</button></div>`).join("") : `<div class="empty">No policies yet. Add one to show it to customers.</div>`}</div>
+    ${cur ? `<div class="card" style="padding:16px;margin-top:14px" id="pe"><h2>${cur.id ? "Edit" : "New"} policy</h2><label for="pt">Policy name (button text) *</label><input id="pt" maxlength="80" value="${esc(cur.title || "")}" style="width:100%"><label for="po" style="display:block;margin-top:10px">Display order (1 shows first)</label><input id="po" type="number" min="0" value="${esc(cur.order ?? list.length + 1)}"><label for="pc" style="display:block;margin-top:10px">Policy content * (plain text; blank line between paragraphs)</label><textarea id="pc" rows="14" style="width:100%">${esc(cur.content || "")}</textarea>${cur.id === "returns" ? `<label for="pw" style="display:block;margin-top:10px">Return window (days after delivery) — decides return eligibility</label><input id="pw" type="number" min="1" max="90" value="${esc(cur.returnWindowDays || 7)}">` : ""}<div class="act" style="margin-top:12px"><button class="ghost" id="pcx">Cancel</button><button class="ghost" id="pdr">Save as draft</button><button class="solid" id="ps">Save &amp; Publish</button></div></div>` : ""}`;
+    if (note) msg(note[0], note[1]);
+    const open = c => { cur = c; draw(); setTimeout(() => $("#pe")?.scrollIntoView({ behavior: "smooth" }), 50); };
+    $("#pn").onclick = () => open({});
+    view.querySelectorAll("[data-q]").forEach(b => b.onclick = () => open({ id: b.dataset.q, title: DEF[b.dataset.q], isNew: 1 }));
+    view.querySelectorAll("[data-e]").forEach(b => b.onclick = () => open(list.find(p => p.id === b.dataset.e)));
+    view.querySelectorAll("[data-d]").forEach(b => b.onclick = async () => { const p = list.find(x => x.id === b.dataset.d); if (!confirm(`Delete "${p.title}"? Customers will no longer see it.` + (p.id === "returns" ? " The return window will reset to 7 days." : ""))) return; try { await deleteDoc(doc(db, "policies", p.id)); cur = null; draw(["Deleted."]); } catch (e) { console.error(e); msg("Could not delete (rules or connection).", 1); } });
+    if (!cur) return; $("#pcx").onclick = () => { cur = null; draw(); };
+    const save = async pub => { const title = $("#pt").value.trim(), c = $("#pc").value.trim(), ord = +$("#po").value || 0;
+      if (title.length < 3) return msg("Policy name must be at least 3 characters.", 1); if (c.length < 20) return msg("Policy content is too short (minimum 20 characters).", 1); if (c.length > 30000) return msg("Policy is too long.", 1);
+      let id = cur.id; if (!id) { id = slug(title); let n = 2; const base = id; while (list.some(p => p.id === id)) id = base + "-" + n++; }
+      const o = { title, content: c, order: ord, published: pub, updatedAt: serverTimestamp(), updatedBy: user.uid };
+      if (id === "returns") { const w = +$("#pw").value; if (!Number.isInteger(w) || w < 1 || w > 90) return msg("Return window must be 1–90 days.", 1); o.returnWindowDays = w; }
+      try { await setDoc(doc(db, "policies", id), o, { merge: true }); cur = null; await draw([pub ? "Published. Customers see it immediately." : "Saved as draft (hidden from customers)."]); } catch (e) { console.error(e); msg("Could not save (rules or connection).", 1); } };
+    $("#ps").onclick = () => save(true); $("#pdr").onclick = () => save(false);
+  };
+  draw();
+}
+
+/* ---------- Order status + delivery code ---------- */
+const STAGES = [["PLACED", "Order placed"], ["PROCESSING", "Processing"], ["READY_TO_SHIP", "Packed"], ["SHIPPED", "Shipped"], ["OUT_FOR_DELIVERY", "Out for delivery"], ["DELIVERED", "Delivered"]];
+const STAGE_IDX = { PENDING_PAYMENT: 0, PLACED: 0, PAID: 0, PROCESSING: 1, READY_TO_SHIP: 2, SHIPPED: 3, OUT_FOR_DELIVERY: 4, NDR: 4, DELIVERED: 5, COMPLETED: 5 };
+const STAGE_MSG = ["", "We're getting your order ready.", "Your order has been packed and is ready to ship.", "Your order has been shipped.", "Your order is out for delivery. When it arrives you'll get a 6-digit delivery code here. Share it with the delivery person only once you have your order."];
+const stageLabel = s => (STAGES[STAGE_IDX[s]] || [])[1] || String(s || "").replace(/_/g, " ");
+const OTP_MS = 90000, OTP_TRIES = 5;
+const sha = async s => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, "0")).join("");
+const rnd = n => { const x = new Uint32Array(1); crypto.getRandomValues(x); return x[0] % n; };
+const tell = (o, title, body) => addDoc(collection(db, "users", o.uid, "notifications"), { title, body, read: false, createdAt: serverTimestamp(), sentBy: user.uid, orderId: o.orderNumber || "" });
+let otpTimer = null;
+
+async function fulfil(view) {
+  let rows = [], flt = "active", q = "";
+  view.innerHTML = `<div class="head"><h1>Update order status</h1><div><input id="fq" placeholder="Search order, customer, phone…" aria-label="Search"><select id="ff" aria-label="Filter"><option value="active">Active orders</option><option value="done">Delivered</option><option value="all">All orders</option></select></div></div><div id="msg"></div><div class="card wrapx" id="ft"><div class="empty">Loading…</div></div>`;
+  const note = (t, bad) => $("#msg").innerHTML = t ? `<div class="${bad ? "alert" : "okmsg"}" role="alert">${esc(t)}</div>` : "";
+  const END = ["DELIVERED", "COMPLETED", "CANCELLED", "FAILED", "EXPIRED"];
+  async function load() {
+    try { rows = (await getDocs(query(collection(db, "orders"), orderBy("createdAt", "desc"), limit(200)))).docs.map(x => ({ id: x.id, d: x.data() })); draw(); }
+    catch (e) { console.error(e); $("#ft").innerHTML = `<div class="alert">Could not load orders. Check Firestore rules or the console.</div>`; }
+  }
+  function draw() {
+    const f = rows.filter(r => (flt === "all" || (flt === "done" ? ["DELIVERED", "COMPLETED"].includes(r.d.status) : !END.includes(r.d.status))) && (!q || [r.id, r.d.orderNumber, r.d.customerName, r.d.customerPhone, r.d.customerEmail].join(" ").toLowerCase().includes(q)));
+    $("#ft").innerHTML = f.length ? `<table><tr><th>Order</th><th>Date</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th></th></tr>${f.map(r => `<tr><td>${esc(r.d.orderNumber || r.id)}</td><td>${esc(fd(r.d.createdAt))}</td><td>${esc(r.d.customerName || "")}</td><td>${inr(r.d.grandTotal)}</td><td>${esc(r.d.paymentMethod || "")} <span class="badge ${bc(r.d.paymentStatus)}">${esc(r.d.paymentStatus || "")}</span></td><td><span class="badge ${bc(r.d.status)}">${esc(stageLabel(r.d.status))}</span></td><td class="ac"><button class="solid" data-o="${esc(r.id)}">Update</button></td></tr>`).join("")}</table>` : `<div class="empty">${rows.length ? "No matching orders." : "No orders yet."}</div>`;
+    $("#ft").querySelectorAll("[data-o]").forEach(b => b.onclick = () => openOrder(rows.find(r => r.id === b.dataset.o)));
+  }
+  $("#fq").oninput = e => { q = e.target.value.trim().toLowerCase(); draw(); };
+  $("#ff").onchange = e => { flt = e.target.value; draw(); };
+
+  function openOrder(r) {
+    const d = $("#dlg"); let mode = "", otp = null, msg = "", busy = false;
+    const num = () => r.d.orderNumber || r.id;
+    const saved = () => { const x = r.d.deliveryOtp; return x?.hash && x.expiresAt?.toMillis ? { hash: x.hash, salt: x.salt, exp: x.expiresAt.toMillis(), tries: x.tries || 0 } : null; };
+    if (r.d.status !== "DELIVERED" && r.d.status !== "COMPLETED") { const s = saved(); if (s && s.exp > Date.now()) { mode = "otp"; otp = s; } }
+    const err = t => msg = `<div class="alert">${esc(t)}</div>`, good = t => msg = `<div class="okmsg">${esc(t)}</div>`;
+
+    async function setStage(i) {
+      const x = r.d, st = i === 0 ? (x.paymentMethod === "COD" ? "PLACED" : "PAID") : STAGES[i][0], fwd = i > (STAGE_IDX[x.status] ?? 0);
+      if (!confirm(`Change order #${num()} to "${STAGES[i][1]}"?${fwd ? " The customer will be notified." : ""}`)) return;
+      busy = true; render();
+      try {
+        const h = { status: st, at: Timestamp.now(), by: user.uid };
+        await updateDoc(doc(db, "orders", r.id), { status: st, updatedAt: serverTimestamp(), updatedBy: user.uid, statusHistory: arrayUnion(h) });
+        r.d.status = st; r.d.statusHistory = [...(r.d.statusHistory || []), h];
+        let told = true; if (fwd) { try { await tell(x, `Order #${num()}: ${STAGES[i][1]}`, STAGE_MSG[i]); } catch (e) { console.error(e); told = false; } }
+        good(`Status updated to "${STAGES[i][1]}".` + (fwd && !told ? " (Customer notification could not be sent.)" : fwd ? " Customer notified." : ""));
+      } catch (e) { console.error(e); err("Update failed (rules or connection)."); }
+      busy = false; render(); draw();
+    }
+    async function sendCode() {
+      busy = true; msg = ""; render();
+      try {
+        const code = String(100000 + rnd(900000)), salt = crypto.randomUUID();
+        await tell(r.d, `Your delivery code: ${code}`, `Share this code with the delivery person only when you receive order #${num()}. It is valid for 90 seconds.`);
+        const exp = Date.now() + OTP_MS, hash = await sha(`${r.id}:${salt}:${code}`);
+        await updateDoc(doc(db, "orders", r.id), { deliveryOtp: { hash, salt, expiresAt: Timestamp.fromMillis(exp), tries: 0, sentBy: user.uid } });
+        otp = { hash, salt, exp, tries: 0 }; r.d.deliveryOtp = { hash, salt, expiresAt: Timestamp.fromMillis(exp), tries: 0 }; good("Code sent to the customer's app. It is valid for 90 seconds.");
+      } catch (e) { console.error(e); err("Couldn't send the code to the customer (rules or connection). Delivery was not confirmed."); }
+      busy = false; render(); $("#oc")?.focus();
+    }
+    async function verify() {
+      const v = ($("#oc").value || "").trim();
+      if (!otp || Date.now() > otp.exp) { err("This code has expired. Send a new one."); return render(); }
+      if (otp.tries >= OTP_TRIES) { err("Too many wrong attempts. Send a new code."); return render(); }
+      if (!/^\d{6}$/.test(v)) { err("Enter the 6-digit code."); return render(); }
+      busy = true; render();
+      try {
+        if ((await sha(`${r.id}:${otp.salt}:${v}`)) !== otp.hash) {
+          otp.tries++; updateDoc(doc(db, "orders", r.id), { "deliveryOtp.tries": otp.tries }).catch(() => {});
+          err(`Wrong code. ${Math.max(0, OTP_TRIES - otp.tries)} attempt${OTP_TRIES - otp.tries === 1 ? "" : "s"} left.`);
+        } else if (Date.now() > otp.exp) { err("This code has expired. Send a new one."); }
+        else {
+          const h = { status: "DELIVERED", at: Timestamp.now(), by: user.uid };
+          await updateDoc(doc(db, "orders", r.id), { status: "DELIVERED", deliveredAt: serverTimestamp(), deliveryVerified: true, deliveryOtp: deleteField(), updatedAt: serverTimestamp(), updatedBy: user.uid, statusHistory: arrayUnion(h) });
+          r.d.status = "DELIVERED"; r.d.statusHistory = [...(r.d.statusHistory || []), h]; delete r.d.deliveryOtp; mode = ""; otp = null;
+          try { await tell(r.d, `Order #${num()} delivered`, "Your order has been delivered. Thank you for shopping with SilvassaCricketStore!"); } catch (e) { console.error(e); }
+          good("Code verified. Order marked as Delivered.");
+        }
+      } catch (e) { console.error(e); err("Update failed (rules or connection)."); }
+      busy = false; render(); draw();
+    }
+    function render() {
+      clearInterval(otpTimer);
+      const x = r.d, cur = STAGE_IDX[x.status], locked = cur === undefined || cur === 5, a = x.shippingAddress || {};
+      d.innerHTML = `<h2 style="font-size:20px;margin-bottom:2px">Order #${esc(num())}</h2><p class="crumb">${esc(x.customerName || "")} · ${esc(x.customerPhone || "")} · ${inr(x.grandTotal)} · ${esc(x.paymentMethod || "")} (${esc(x.paymentStatus || "")})</p><div id="dm" style="margin-top:10px">${msg}</div>
+      <div class="stp">${STAGES.map(([, l], i) => `<button data-i="${i}" class="${i < cur ? "done" : i === cur ? "now" : ""}"${locked || i === cur || busy ? " disabled" : ""}>${i < cur ? "✓ " : ""}${esc(l)}</button>`).join("")}</div>
+      ${cur === undefined ? `<div class="alert">This order is ${esc(x.status)}, so its status can't be changed here.</div>` : cur === 5 ? `<div class="okmsg">Delivered${x.deliveryVerified ? " and confirmed with the customer's code" : ""}.</div>` : mode === "otp" ? `<div class="otpb"><b>Confirm delivery with the customer's code</b>${!otp ? `<p class="crumb" style="margin:6px 0 10px">A 6-digit code is sent to the customer's app. Ask the customer for it when handing over the order. It is valid for 90 seconds.</p><button class="solid" id="sc"${busy ? " disabled" : ""}>${busy ? "Sending…" : "Send code to customer"}</button>` : `<p class="crumb" style="margin:6px 0 10px">Code sent. <span class="tm" id="tm"></span></p><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="oc" inputmode="numeric" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code" aria-label="Delivery code" style="max-width:170px"><button class="solid" id="vf"${busy ? " disabled" : ""}>Verify &amp; mark delivered</button><button class="ghost" id="sc"${busy ? " disabled" : ""}>Send a new code</button></div>`} <button class="ghost" id="bk" style="margin-top:10px">Cancel</button></div>` : `<p class="crumb">Choose the stage to move this order to. The customer is notified in the app. "Delivered" needs a code from the customer.</p>`}
+      <h3 style="margin:16px 0 6px;font-size:15px">Items</h3><div class="wrapx"><table><tr><th>Item</th><th>Qty</th><th>Price</th></tr>${(x.items || []).map(i => `<tr><td>${esc(i.name)}</td><td>${esc(i.qty)}</td><td>${inr(i.price)}</td></tr>`).join("")}</table></div>
+      <p class="crumb" style="margin-top:10px">Deliver to: ${esc([a.name, a.line1, a.line2, a.landmark, a.city, a.state, a.pin].filter(Boolean).join(", "))}${a.phone ? " · " + esc(a.phone) : ""}</p>
+      <div class="act" style="margin-top:14px"><button class="ghost" id="cl">Close</button></div>`;
+      d.querySelectorAll("[data-i]").forEach(b => b.onclick = () => { const i = +b.dataset.i; if (i === 5) { msg = ""; mode = "otp"; const s = saved(); otp = s && s.exp > Date.now() ? s : null; render(); } else setStage(i); });
+      const on = (id, f) => { const e = d.querySelector(id); if (e) e.onclick = f; };
+      on("#sc", sendCode); on("#vf", verify); on("#bk", () => { mode = ""; msg = ""; render(); }); on("#cl", () => d.close());
+      const oc = $("#oc"); if (oc) oc.onkeydown = e => { if (e.key === "Enter") verify(); };
+      if (mode === "otp" && otp) {
+        const tick = () => { const left = Math.max(0, otp.exp - Date.now()), t = $("#tm"); if (!t) return; if (left <= 0) { t.textContent = "Code expired. Send a new one."; t.classList.add("x"); $("#oc") && ($("#oc").disabled = true); $("#vf") && ($("#vf").disabled = true); clearInterval(otpTimer); } else t.textContent = `Valid for ${Math.floor(left / 60000)}:${String(Math.floor(left / 1000) % 60).padStart(2, "0")}`; };
+        tick(); otpTimer = setInterval(tick, 250);
+      }
+    }
+    d.onclose = () => clearInterval(otpTimer);
+    render(); d.showModal();
+  }
+  load();
 }
 
 /* ---------- Send notification to all customers ---------- */
@@ -248,7 +398,7 @@ async function dashboard(view) {
   const v = r => r.status === "fulfilled" ? r.value : "—", errs = [oq, cust, prod, low, oos, ref_, rev_].filter(r => r.status === "rejected"); errs.forEach(r => console.error(r.reason));
   const orders = oq.status === "fulfilled" ? oq.value.docs.map(x => ({ id: x.id, ...x.data() })) : [], by = s => orders.filter(o => [].concat(s).includes(o.status)).length;
   const rev = orders.filter(o => PAID.includes(o.status)).reduce((a, o) => a + (+o.grandTotal || 0), 0);
-  const kpi = [["Revenue", oq.status === "fulfilled" ? inr(rev) : "—"], ["Orders", orders.length], ["Paid, to process", by("PAID")], ["Processing", by(["PROCESSING", "READY_TO_SHIP"])], ["Shipped", by(["SHIPPED", "OUT_FOR_DELIVERY"])], ["Delivered", by(["DELIVERED", "COMPLETED"])], ["Cancelled / failed", by(BAD)], ["Customers", v(cust)], ["Products", v(prod)], ["Low stock (≤5)", v(low)], ["Out of stock", v(oos)], ["Refund requests", v(ref_)], ["Reviews to moderate", v(rev_)]];
+  const kpi = [["Revenue", oq.status === "fulfilled" ? inr(rev) : "—"], ["Orders", orders.length], ["New, to process", by(["PAID","PLACED"])], ["Processing", by(["PROCESSING", "READY_TO_SHIP"])], ["Shipped", by(["SHIPPED", "OUT_FOR_DELIVERY"])], ["Delivered", by(["DELIVERED", "COMPLETED"])], ["Cancelled / failed", by(BAD)], ["Customers", v(cust)], ["Products", v(prod)], ["Low stock (≤5)", v(low)], ["Out of stock", v(oos)], ["Refund requests", v(ref_)], ["Reviews to moderate", v(rev_)]];
   const days = {}; for (let i = 0; i < Math.max(d, 1); i++) days[new Date(from.getTime() + i * 864e5).toISOString().slice(5, 10)] = 0;
   orders.filter(o => PAID.includes(o.status) && o.createdAt?.toDate).forEach(o => { const k = o.createdAt.toDate().toISOString().slice(5, 10); if (k in days) days[k] += +o.grandTotal || 0; });
   const max = Math.max(...Object.values(days), 1), sel = x => (window._range ?? 7) == x ? " selected" : "";

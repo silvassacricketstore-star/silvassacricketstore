@@ -1,0 +1,396 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#052B21"><meta name="robots" content="noindex">
+<title>Checkout · SCS</title><link rel="icon" href="../Assets/Logo/Logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+:root{--forest:#073B2C;--dark:#052B21;--lime:#C4E86B;--bg:#F7F8F5;--ink:#10201A;--mut:#6B766F;--line:#E1E6E3;--err:#B3261E;--ok:#0B6B45;--disp:"Barlow Condensed","Arial Narrow",sans-serif}
+*{box-sizing:border-box;margin:0}body{font:15px/1.5 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}a{color:inherit;text-decoration:none}button,input,select{font:inherit}
+.ann{background:var(--dark);color:#e8efe9;text-align:center;font-size:13px;padding:7px 12px}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,4vw,48px);background:#fff;border-bottom:1px solid var(--line)}
+.logo{font:800 24px/1 var(--disp);letter-spacing:.08em;text-transform:uppercase;color:var(--forest);display:flex;align-items:center;gap:10px}.logo img{height:52px;width:auto;max-width:200px;object-fit:contain;display:block}
+.sec{color:var(--mut);font-size:13px;font-weight:500}
+main{flex:1 0 auto}.wrap{max-width:1120px;margin:0 auto;padding:24px clamp(16px,4vw,48px) 48px}
+h1{font:700 36px/1 var(--disp);text-transform:uppercase;color:var(--forest);margin-bottom:18px}
+h2{font:700 20px var(--disp);text-transform:uppercase;color:var(--forest);margin-bottom:12px;letter-spacing:.02em}
+.co{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}@media(max-width:860px){.co{grid-template-columns:1fr}}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.sum{position:sticky;top:16px}@media(max-width:860px){.sum{position:static}}
+.note{color:var(--mut);font-size:13px}
+label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin-bottom:4px}
+input,select{width:100%;height:42px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:#fff}input:focus,select:focus{outline:0;border-color:var(--forest);box-shadow:0 0 0 3px rgba(7,59,44,.14)}input:disabled{background:var(--bg)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fg .w{grid-column:1/-1}@media(max-width:560px){.fg{grid-template-columns:1fr}}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink);font-weight:400;margin:0}.chk input{width:auto;height:auto}
+.ad{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;cursor:pointer}.ad.on{border-color:var(--forest);background:#F3F9F5}.ad input{width:auto;height:auto;margin-top:4px}
+.badge{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#DDF3E7;color:var(--ok);margin-left:6px}
+.btn{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;height:50px;border:0;border-radius:10px;background:var(--forest);color:#fff;font-weight:600;font-size:16px;cursor:pointer;transition:background .2s}.btn:hover:not(:disabled){background:var(--dark)}.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.s{width:auto;height:42px;padding:0 18px;font-size:14px}.btn.o{background:#fff;color:var(--forest);border:1px solid var(--forest)}.btn.l{background:var(--lime);color:var(--dark)}
+.ln{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.ln img{width:52px;height:52px;object-fit:cover;border-radius:8px;background:#EEF1EC}
+.tr{display:flex;justify-content:space-between;padding:5px 0}.tr.g{font-weight:700;font-size:18px;border-top:1px solid var(--line);margin-top:6px;padding-top:12px;color:var(--forest)}.tr.d{color:var(--ok)}
+.cp{display:flex;gap:8px;margin:14px 0 4px}.cp input{text-transform:uppercase}
+.alert{background:#FBE0DD;color:var(--err);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:14px}.okm{background:#DDF3E7;color:var(--ok);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:14px}
+.empty{text-align:center;color:var(--mut);padding:56px 12px}.empty h1{margin-bottom:10px}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;display:none}.busy .spin{display:inline-block}@keyframes s{to{transform:rotate(360deg)}}
+#ov{position:fixed;inset:0;background:rgba(5,43,33,.6);z-index:50;display:none;align-items:center;justify-content:center;color:#fff;font-weight:600;flex-direction:column;gap:14px}#ov.on{display:flex}#ov i{width:36px;height:36px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite}
+.tick{width:72px;height:72px;border-radius:50%;background:var(--ok);color:#fff;font-size:40px;display:grid;place-items:center;margin:0 auto 16px}
+
+.fold{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s ease}.fold.open{grid-template-rows:1fr}.foldin{overflow:hidden;min-height:0}.fold .fg{padding:14px 2px 2px}
+.ad{transition:border-color .2s,background .2s,transform .2s}.ad:hover{border-color:#9fb8ac}.ad.pop{animation:pop .45s ease}@keyframes pop{0%{transform:scale(.96);opacity:0}60%{transform:scale(1.02)}100%{transform:none;opacity:1}}
+.shake{animation:shake .45s}@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.pm{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:13px;margin-bottom:10px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}.pm input{width:auto;height:auto}.pm.on{border-color:var(--forest);background:#F3F9F5;box-shadow:0 0 0 3px rgba(7,59,44,.08)}.pm svg{width:28px;height:28px;stroke:var(--forest);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.empty-ad{border:1px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--mut);margin-bottom:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--dark);color:#fff;padding:10px 18px;border-radius:10px;opacity:0;transition:.3s;z-index:90;pointer-events:none}.toast.on{opacity:1;transform:translate(-50%,0)}
+#ty{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,#0b5a42,#052B21 70%);padding:16px;overflow:hidden}#ty.on{display:flex;animation:fadein .4s}@keyframes fadein{from{opacity:0}}
+.tyc{position:relative;z-index:2;background:#fff;border-radius:20px;padding:34px 26px 26px;max-width:460px;width:100%;text-align:center;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:rise .6s cubic-bezier(.2,.9,.3,1.2)}@keyframes rise{from{transform:translateY(40px) scale(.94);opacity:0}}
+.tyc h1{font-size:44px;margin:14px 0 4px}.tyc p{color:var(--mut)}
+.ck{width:110px;height:110px;margin:0 auto;display:block;overflow:visible}.ck .ring{fill:var(--ok);transform-origin:50% 50%;animation:grow .5s cubic-bezier(.2,.9,.3,1.3)}.ck .tk{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;animation:draw .5s .35s ease-out backwards}.ck .rp{fill:none;stroke:var(--ok);stroke-width:2;transform-origin:50% 50%;opacity:0;animation:rip 1.4s .3s ease-out 2}
+@keyframes grow{from{transform:scale(0)}}@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}@keyframes rip{from{transform:scale(.8);opacity:.6}to{transform:scale(1.7);opacity:0}}
+.tyd{background:var(--bg);border-radius:12px;padding:12px 14px;margin:18px 0 14px;font-size:14px;text-align:left}.tyd div{display:flex;justify-content:space-between;gap:12px;padding:3px 0}.tyd span:first-child{color:var(--mut)}
+.bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin:14px 0 8px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--forest),var(--lime));transition:width .12s linear}
+.cf{position:absolute;top:38%;left:50%;width:9px;height:14px;border-radius:2px;opacity:0;z-index:1;animation:conf 2.4s ease-out forwards}@keyframes conf{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+@media(prefers-reduced-motion:reduce){.cf{display:none}.ck .rp{display:none}}
+footer.ft{background:var(--dark);color:#aab8ae;text-align:center;padding:22px 16px;font-size:13px;flex-shrink:0}
+:focus-visible{outline:3px solid rgba(7,59,44,.4);outline-offset:2px}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.ad>span:not(.ico){flex:1;min-width:0}.ico{flex:none;margin-left:auto;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--forest);cursor:pointer;padding:0;transition:border-color .2s,background .2s}.ico:hover{border-color:var(--forest);background:#F3F9F5}
+.mo{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,43,33,.6)}.mo.on{display:flex}
+.mc{background:#fff;border-radius:14px;width:100%;max-width:460px;max-height:calc(100dvh - 32px);overflow:auto;padding:20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:mIn .25s ease}@keyframes mIn{from{transform:translateY(16px);opacity:0}}
+.mc h2{margin-bottom:4px}.mc .fg{margin-top:14px}.mc .acts{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+.ferr{color:var(--err);font-size:12px;margin-top:3px}input[aria-invalid=true]{border-color:var(--err)}
+</style></head><body>
+<div class="ann">Genuine cricket gear, delivered across India.</div>
+<header class="hd"><a class="logo" href="index.html#/" aria-label="SilvassaCricketStore home"><img src="../Assets/Logo/Logo.png" alt="SCS logo" onerror="this.style.display='none'"><span>SilvassaCricketStore</span></a><span class="sec">🔒 Secure checkout</span></header>
+<main id="v"><div class="wrap"><div class="empty">Loading checkout…</div></div></main>
+<footer class="ft">© SilvassaCricketStore · Payments are processed securely by Razorpay. We never store your card details.</footer>
+<div id="ty" role="dialog" aria-live="polite" aria-label="Order confirmed"></div><div id="toast" class="toast" role="status"></div>
+<div id="ov" role="status" aria-live="polite"><i></i><span id="ovt">Please wait…</span></div>
+<div id="em" class="mo" aria-hidden="true"><div class="mc" role="dialog" aria-modal="true" aria-labelledby="emt">
+  <h2 id="emt">Edit delivery address</h2><p class="note">Changes are saved to your profile and used for this order.</p>
+  <div class="fg">
+    <div><label for="eh">House number *</label><input id="eh" maxlength="30" autocomplete="off"><div class="ferr" id="eh-e"></div></div>
+    <div><label for="ez">PIN code *</label><input id="ez" inputmode="numeric" maxlength="6" autocomplete="postal-code"><div class="ferr" id="ez-e"></div></div>
+    <div class="w"><label for="es">Street *</label><input id="es" maxlength="100" autocomplete="off"><div class="ferr" id="es-e"></div></div>
+    <div class="w"><label for="el">Locality</label><input id="el" maxlength="100" autocomplete="off"><div class="ferr" id="el-e"></div></div>
+    <div><label for="ec">City *</label><input id="ec" maxlength="60" autocomplete="address-level2"><div class="ferr" id="ec-e"></div></div>
+    <div><label for="est">State *</label><input id="est" maxlength="60" autocomplete="address-level1"><div class="ferr" id="est-e"></div></div>
+  </div>
+  <div id="emm"></div>
+  <div class="acts"><button class="btn s o" id="emCancel" type="button">Cancel</button><button class="btn s" id="emSave" type="button"><span class="spin"></span><span>Save</span></button></div>
+</div></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, query, where, limit, getDocs, getDoc, addDoc, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* ---------- Settings ---------- */
+const RAZORPAY_KEY_ID = "rzp_live_U0PSxdjQceQt3E";   // PUBLIC key id only. Never put the secret here.
+const SHIPPING_FLAT = 0;          // rupees. 0 = free
+const FREE_SHIPPING_ABOVE = 0;    // 0 = not used
+const REDIRECT_SECONDS = 5;
+const CT = { phone: "+91 70463 89173", tel: "+917046389173" };
+
+const app = initializeApp({ apiKey: "AIzaSyBuhC88hfPaYatMF2eU8BCk9LmAMrheufE", authDomain: "silvassacricketstore-4557c.firebaseapp.com", projectId: "silvassacricketstore-4557c", storageBucket: "silvassacricketstore-4557c.firebasestorage.app", messagingSenderId: "441799530052", appId: "1:441799530052:web:6fc80bc509b1bad00f4e11" });
+const auth = getAuth(app), db = getFirestore(app);
+const LOGIN = "../index.html", HOME = "index.html", ORDERS = "index.html#/account/orders", STASH = "scs_unsaved_order";
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+const r2 = n => Math.round((+n || 0) * 100) / 100;
+const img = (u, w = 128) => /^https:\/\//.test(u || "") ? u.replace("/upload/", `/upload/f_auto,q_auto,w_${w}/`) : "";
+const rd = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch { return []; } };
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+const P = new URLSearchParams(location.search), buyId = P.get("buy"), isBuy = !!buyId;
+let user = null, lines = isBuy ? [{ id: buyId, q: Math.max(1, parseInt(P.get("qty")) || 1) }] : rd("scs_cart").filter(c => c && c.id && c.q > 0).map(c => ({ id: c.id, q: c.q }));
+let addrs = [], sel = null, pm = "online", q = null, coupon = "", busy = false, saving = false, profile = {};
+
+const view = h => { $("#v").innerHTML = `<div class="wrap">${h}</div>`; };
+const overlay = (on, t) => { $("#ov").classList.toggle("on", on); if (t) $("#ovt").textContent = t; };
+const show = (t, ok) => { const m = $("#msg"); if (m) m.innerHTML = t ? `<div class="${ok ? "okm" : "alert"}" role="alert">${esc(t)}</div>` : ""; };
+let tT; const toast = t => { const e = $("#toast"); e.textContent = t; e.classList.add("on"); clearTimeout(tT); tT = setTimeout(() => e.classList.remove("on"), 2400); };
+const payLabel = () => pm === "cod" ? `Place order · ${inr(q?.grandTotal)} (Cash on delivery)` : `Pay ${inr(q?.grandTotal)} securely`;
+const setBusy = (on, t) => { busy = on; const b = $("#pay"); if (!b) return; b.disabled = on || !q || !q.lines.length || q.issues.length > 0; b.classList.toggle("busy", on); $("#payt").textContent = on ? (t || "Please wait…") : payLabel(); };
+
+/* ---------- price calculation ---------- */
+async function compute(code) {
+  const merged = new Map(); lines.forEach(l => merged.set(l.id, Math.min((merged.get(l.id) || 0) + l.q, 100)));
+  const out = [], issues = [];
+  for (const [id, qty] of merged) {
+    let d = null; try { if (!id.includes("/")) { const s = await getDoc(doc(db, "products", id)); d = s.exists() ? s.data() : null; } } catch (e) { console.error(e); }
+    if (!d || (d.status || "active") !== "active") { issues.push("An item in your cart is no longer available."); continue; }
+    const stock = +d.stock || 0, price = +(d.mrp ?? d.price) || 0;
+    if (stock < 1) { issues.push(`${d.name} is out of stock.`); continue; }
+    if (qty > stock) { issues.push(`Only ${stock} of ${d.name} available. Please reduce the quantity in your cart.`); continue; }
+    if (price <= 0) { issues.push(`${d.name} can't be purchased right now.`); continue; }
+    out.push({ id, name: d.name || "Product", sku: d.sku || "", qty, price, image: (d.images || [])[0] || "" });
+  }
+  const subtotal = r2(out.reduce((a, l) => a + l.price * l.qty, 0));
+  let discount = 0, applied = "", couponError = "";
+  const cc = String(code || "").trim().toUpperCase();
+  if (cc) {
+    let c = null; try { const s = await getDoc(doc(db, "coupons", cc)); c = s.exists() ? s.data() : null; } catch (e) { console.error(e); couponError = "We couldn't check that coupon right now."; }
+    const now = Date.now();
+    if (couponError) { }
+    else if (!c || c.active !== "active") couponError = "This coupon code is not valid.";
+    else if (c.validFrom?.toMillis && c.validFrom.toMillis() > now) couponError = "This coupon is not active yet.";
+    else if (c.validTo?.toMillis && c.validTo.toMillis() < now) couponError = "This coupon has expired.";
+    else if (c.usageLimit && (c.used || 0) >= c.usageLimit) couponError = "This coupon has reached its usage limit.";
+    else if (subtotal < (+c.minPrice || 0)) couponError = `Add items worth ${inr(c.minPrice)} or more to use this coupon.`;
+    else {
+      discount = subtotal * (+c.discountPercent || 0) / 100;
+      if (+c.maxDiscount > 0) discount = Math.min(discount, +c.maxDiscount);
+      discount = Math.min(Math.floor(discount * 100) / 100, subtotal); applied = cc;
+    }
+  }
+  const shipping = out.length && !(FREE_SHIPPING_ABOVE > 0 && subtotal - discount >= FREE_SHIPPING_ABOVE) ? SHIPPING_FLAT : 0;
+  return { lines: out, issues, subtotal, discount: r2(discount), shipping, grandTotal: r2(subtotal - discount + shipping), couponCode: applied, couponError };
+}
+
+/* ---------- boot ---------- */
+onAuthStateChanged(auth, async u => {
+  if (user && u && u.uid === user.uid) return;
+  user = u && !u.isAnonymous ? u : null;
+  if (!user) return view(`<div class="empty"><h1>Sign in to checkout</h1><p style="margin-bottom:16px">Please sign in or create an account to place your order. Your cart is saved on this device.</p><a class="btn s" style="display:inline-flex" href="${LOGIN}">Sign in / Create account</a></div>`);
+  if (await flushStash()) return;                      // recovers an order that was paid but not saved earlier
+  if (!lines.length) return view(`<div class="empty"><h1>Your cart is empty</h1><p style="margin-bottom:16px">Add some gear to your cart before checking out.</p><a class="btn s" style="display:inline-flex" href="${HOME}#/shop">Continue shopping</a></div>`);
+  try { profile = (await getDoc(doc(db, "users", user.uid))).data() || {}; } catch (e) { console.error(e); }
+  try { addrs = (await getDocs(query(collection(db, "users", user.uid, "addresses"), limit(20)))).docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0)); } catch (e) { console.error(e); }
+  sel = addrs[0]?.id || null; build();
+  await refresh();
+});
+
+async function refresh() {
+  try { q = await compute(coupon); }
+  catch (e) { console.error(e); q = { lines: [], issues: ["We couldn't load your order. Please refresh the page."], subtotal: 0, discount: 0, shipping: 0, grandTotal: 0, couponCode: "", couponError: "" }; }
+  if (q.couponError) { $("#cm").innerHTML = `<div class="alert">${esc(q.couponError)}</div>`; coupon = ""; }
+  else $("#cm").innerHTML = q.couponCode ? `<div class="okm">Coupon <b>${esc(q.couponCode)}</b> applied.</div>` : "";
+  drawSum();
+}
+
+/* ---------- page ---------- */
+const ICON_CARD = '<svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></svg>';
+const ICON_CASH = '<svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v.01M18 14.5v.01"/></svg>';
+
+function build() {
+  const f = (id, l, ex = "", v = "") => `<div><label for="${id}">${l}</label><input id="${id}" value="${esc(v)}" ${ex}></div>`;
+  view(`<h1>Checkout</h1><div class="co"><div>
+    <section class="box"><h2>Contact</h2><p class="note">Order updates will be sent to <b>${esc(user.email || "your account")}</b>.</p></section>
+    <section class="box" id="abox"><h2>Delivery address</h2>
+      <div id="al"></div>
+      <button class="btn s o" id="addBtn" type="button">+ Add new address</button>
+      <div class="fold" id="fold"><div class="foldin"><div class="fg">
+        ${f("an", "Full name *", 'maxlength="60" autocomplete="name"', user.displayName || profile.name || "")}${f("ap", "Mobile number *", 'inputmode="numeric" maxlength="10" autocomplete="tel-national"', profile.phone || "")}
+        ${f("az", "PIN code *", 'inputmode="numeric" maxlength="6" autocomplete="postal-code"')}<div><label for="at">Address type</label><select id="at"><option>Home</option><option>Work</option><option>Other</option></select></div>
+        <div class="w">${f("a1", "House / Flat, street *", 'maxlength="120" autocomplete="address-line1"')}</div>
+        ${f("a2", "Locality (optional)", 'maxlength="120"')}${f("al2", "Landmark (optional)", 'maxlength="120"')}
+        ${f("ac", "City *", 'maxlength="60" autocomplete="address-level2"')}${f("as", "State *", 'maxlength="60" autocomplete="address-level1"')}
+        <div class="w" id="am"></div>
+        <div class="w" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn s" id="saveAd" type="button"><span class="spin"></span><span>Save address</span></button><button class="btn s o" id="cancelAd" type="button">Cancel</button></div>
+      </div></div></div>
+    </section>
+    <section class="box"><h2>Payment method</h2>
+      <label class="pm on" data-pm="online"><input type="radio" name="pm" value="online" checked>${ICON_CARD}<span><b>Pay online</b><br><span class="note">UPI &amp; QR, debit/credit cards, EMI, netbanking, wallets and Pay Later (Razorpay). EMI and Pay Later show on eligible order values.</span></span></label>
+      <label class="pm" data-pm="cod"><input type="radio" name="pm" value="cod">${ICON_CASH}<span><b>Cash on delivery</b><span class="badge">No extra fee</span><br><span class="note">Pay in cash when your order arrives</span></span></label>
+    </section>
+    <div id="msg"></div></div>
+    <aside class="sum"><section class="box"><h2>Order summary</h2><div id="lines"></div><div id="iss"></div>
+      <div class="cp"><input id="cc" placeholder="Coupon code" aria-label="Coupon code" maxlength="20"><button class="btn s o" id="ca" type="button">Apply</button></div><div id="cm"></div>
+      <div id="tot" style="margin-top:10px"></div>
+      <button class="btn" id="pay" style="margin-top:14px" disabled><span class="spin"></span><span id="payt">Pay securely</span></button>
+      <p class="note" style="margin-top:10px;text-align:center">${isBuy ? "" : `<a href="${HOME}#/shop" style="text-decoration:underline">Continue shopping</a> · `}Secure checkout</p></section></aside></div>`);
+  drawAddrs();
+  $("#addBtn").onclick = () => openForm(true);
+  $("#cancelAd").onclick = () => openForm(false);
+  $("#saveAd").onclick = saveAddress;
+  document.querySelectorAll("[data-pm]").forEach(l => l.onclick = () => { pm = l.dataset.pm; document.querySelectorAll("[data-pm]").forEach(x => { x.classList.toggle("on", x === l); x.querySelector("input").checked = x === l; }); if (!busy) $("#payt").textContent = payLabel(); });
+  $("#ca").onclick = () => { coupon = $("#cc").value.trim().toUpperCase(); refresh(); };
+  $("#cc").onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); $("#ca").click(); } };
+  $("#pay").onclick = placeOrder;
+  $("#fold").inert = true;
+}
+
+function drawAddrs(popId) {
+  const box = $("#al");
+  box.innerHTML = addrs.length ? addrs.map(a => `<label class="ad${a.id === sel ? " on" : ""}${a.id === popId ? " pop" : ""}" data-ad="${esc(a.id)}"><input type="radio" name="ad" value="${esc(a.id)}"${a.id === sel ? " checked" : ""}><span><b>${esc(a.name)}</b><span class="badge">${esc(a.type || "Home")}</span>${a.isDefault ? '<span class="badge">Default</span>' : ""}<br>${esc([a.line1, a.line2, a.landmark, a.city, a.state, a.pin].filter(Boolean).join(", "))}<br><span class="note">Mobile: ${esc(a.phone)}</span></span><button type="button" class="ico" data-edit="${esc(a.id)}" aria-label="Edit address" title="Edit address"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></label>`).join("")
+    : `<div class="empty-ad">You have no saved delivery address yet. Add one to continue.</div>`;
+  box.querySelectorAll("[data-ad]").forEach(l => l.onclick = () => { sel = l.dataset.ad; box.querySelectorAll("[data-ad]").forEach(x => { x.classList.toggle("on", x === l); x.querySelector("input").checked = x === l; }); });
+  box.querySelectorAll("[data-edit]").forEach(btn => btn.onclick = e => {
+    e.preventDefault(); e.stopPropagation(); const id = btn.dataset.edit; sel = id;   // editing a card also selects it
+    box.querySelectorAll("[data-ad]").forEach(x => { const on = x.dataset.ad === id; x.classList.toggle("on", on); x.querySelector("input").checked = on; });
+    openEdit();
+  });
+}
+function openForm(on) {
+  const fold = $("#fold"); fold.classList.toggle("open", on); fold.inert = !on;
+  $("#addBtn").style.display = on ? "none" : ""; $("#am").innerHTML = "";
+  if (on) setTimeout(() => $("#an")?.focus(), 380);
+}
+async function saveAddress() {
+  const g = id => $("#" + id).value.trim(), a = { name: g("an"), phone: g("ap").replace(/\D/g, ""), pin: g("az"), line1: g("a1"), line2: g("a2"), landmark: g("al2"), city: g("ac"), state: g("as"), type: $("#at").value };
+  const bad = a.name.length < 2 ? "Please enter your full name." : !/^[6-9]\d{9}$/.test(a.phone) ? "Enter a valid 10-digit mobile number." : !/^\d{6}$/.test(a.pin) ? "Enter a valid 6-digit PIN code." : !a.line1 ? "Please enter your house / street address." : !a.city || !a.state ? "Please enter your city and state." : "";
+  if (bad) { $("#am").innerHTML = `<div class="alert">${esc(bad)}</div>`; return; }
+  const b = $("#saveAd"); b.disabled = true; b.classList.add("busy");
+  try {
+    const ref = await addDoc(collection(db, "users", user.uid, "addresses"), { ...a, isDefault: addrs.length === 0, createdAt: serverTimestamp() });
+    addrs.push({ id: ref.id, ...a, isDefault: addrs.length === 0 }); sel = ref.id;
+    drawAddrs(ref.id); openForm(false); ["an","ap","az","a1","a2","al2","ac","as"].forEach(i => { if (i !== "an" && i !== "ap") $("#" + i).value = ""; });
+    toast("Address saved"); show("");
+  } catch (e) { console.error(e); $("#am").innerHTML = `<div class="alert">Couldn't save the address (${esc(e.code || "error")}). Please try again.</div>`; }
+  b.disabled = false; b.classList.remove("busy");
+}
+/* ---------- edit selected address (modal) ---------- */
+const curAddr = () => addrs.find(x => x.id === sel) || null;
+function splitLine1(a) {                          // older addresses only have line1; best-effort split so the modal is pre-filled
+  if (a.house || a.street) return { house: a.house || "", street: a.street || "" };
+  const s = String(a.line1 || "").trim(), i = s.indexOf(",");
+  if (i > 0 && i <= 20 && /\d/.test(s.slice(0, i))) return { house: s.slice(0, i).trim(), street: s.slice(i + 1).trim() };
+  const m = s.match(/^(\S*\d\S*)[,\s]+(.+)$/);
+  return m ? { house: m[1], street: m[2] } : { house: "", street: s };
+}
+const EF = { eh: "house", es: "street", el: "locality", ec: "city", est: "state", ez: "pin" };
+const clean = v => String(v || "").trim().replace(/\s+/g, " ");
+const readEdit = () => Object.fromEntries(Object.entries(EF).map(([id, k]) => [k, clean($("#" + id).value)]));
+const NAME_RE = /^\p{L}[\p{L} .'’\-]{1,59}$/u;
+function validateEdit(v) {
+  const e = {};
+  if (!v.house) e.house = "Enter your house number.";
+  if (v.street.length < 2) e.street = "Enter your street.";
+  if (!v.city) e.city = "Enter your city."; else if (!NAME_RE.test(v.city)) e.city = "Enter a valid city name.";
+  if (!v.state) e.state = "Enter your state."; else if (!NAME_RE.test(v.state)) e.state = "Enter a valid state name.";
+  if (!v.pin) e.pin = "Enter your PIN code."; else if (!/^[1-9]\d{5}$/.test(v.pin)) e.pin = "Enter a valid 6-digit PIN code.";
+  return e;
+}
+function showEditErrs(e) {
+  for (const [id, k] of Object.entries(EF)) { $("#" + id + "-e").textContent = e[k] || ""; $("#" + id).setAttribute("aria-invalid", e[k] ? "true" : "false"); }
+}
+const PAGE = "main,.hd,.ft,.ann"; let emFrom = null, emSaving = false;
+function openEdit() {
+  const a = curAddr(); if (!a || busy || saving) return;
+  const s = splitLine1(a);
+  $("#eh").value = s.house; $("#es").value = s.street; $("#el").value = a.line2 || ""; $("#ec").value = a.city || ""; $("#est").value = a.state || ""; $("#ez").value = a.pin || "";
+  showEditErrs({}); $("#emm").innerHTML = "";
+  emFrom = document.activeElement; document.querySelectorAll(PAGE).forEach(x => x.inert = true);
+  $("#em").classList.add("on"); $("#em").setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden";
+  setTimeout(() => $("#eh").focus(), 30);
+}
+function closeEdit() {
+  if (emSaving) return;
+  $("#em").classList.remove("on"); $("#em").setAttribute("aria-hidden", "true"); document.body.style.overflow = "";
+  document.querySelectorAll(PAGE).forEach(x => x.inert = false);
+  (emFrom && document.contains(emFrom) ? emFrom : document.querySelector(`[data-edit="${sel}"]`))?.focus();
+}
+async function saveEdit() {
+  if (emSaving) return;
+  const a = curAddr(); if (!a) return closeEdit();
+  const v = readEdit(), err = validateEdit(v); showEditErrs(err); $("#emm").innerHTML = "";
+  const bad = Object.keys(EF).find(id => err[EF[id]]); if (bad) { $("#" + bad).focus(); return; }
+  const patch = { house: v.house, street: v.street, line1: `${v.house}, ${v.street}`, line2: v.locality, city: v.city, state: v.state, pin: v.pin };
+  const b = $("#emSave"); emSaving = true; b.disabled = true; $("#emCancel").disabled = true; b.classList.add("busy");
+  try {
+    await setDoc(doc(db, "users", user.uid, "addresses", a.id), { ...patch, updatedAt: serverTimestamp() }, { merge: true });
+    Object.assign(a, patch);                       // local copy changes only after Firestore confirms, so placeOrder never sees an unsaved address
+    drawAddrs(a.id); emSaving = false; closeEdit(); toast("Address updated"); show("");
+  } catch (e) { console.error(e); $("#emm").innerHTML = `<div class="alert" role="alert">Couldn't save the address (${esc(e.code || "error")}). Please try again.</div>`; }
+  emSaving = false; b.disabled = false; $("#emCancel").disabled = false; b.classList.remove("busy");
+}
+$("#emSave").onclick = saveEdit; $("#emCancel").onclick = closeEdit;
+$("#em").addEventListener("mousedown", e => { if (e.target === $("#em")) closeEdit(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#em").classList.contains("on")) closeEdit(); });
+$("#em").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT") { e.preventDefault(); saveEdit(); } });
+
+function drawSum() {
+  $("#lines").innerHTML = q.lines.map(l => `<div class="ln"><img src="${esc(img(l.image))}" alt=""><div><b>${esc(l.name)}</b><div class="note">Qty ${l.qty} × ${inr(l.price)}</div></div><div>${inr(l.price * l.qty)}</div></div>`).join("") || `<p class="note">No items available.</p>`;
+  $("#iss").innerHTML = q.issues.map(i => `<div class="alert">${esc(i)} <a href="${HOME}#/shop" style="text-decoration:underline">Back to shop</a></div>`).join("");
+  $("#tot").innerHTML = `<div class="tr"><span>Subtotal</span><span>${inr(q.subtotal)}</span></div>${q.discount > 0 ? `<div class="tr d"><span>Discount (${esc(q.couponCode)})</span><span>− ${inr(q.discount)}</span></div>` : ""}<div class="tr"><span>Shipping</span><span>${q.shipping > 0 ? inr(q.shipping) : "Free"}</span></div><div class="tr g"><span>Total</span><span>${inr(q.grandTotal)}</span></div>`;
+  setBusy(false);
+}
+
+/* ---------- place order ---------- */
+async function placeOrder() {
+  if (busy) return; show("");
+  const a0 = addrs.find(x => x.id === sel);
+  if (!a0) { show("Please select or add a delivery address."); const ab = $("#abox"); ab.classList.remove("shake"); void ab.offsetWidth; ab.classList.add("shake"); ab.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  // Independent snapshot: a plain copy of the values at order time, stored inside the order. Later profile edits never touch it.
+  const a = { name: a0.name, phone: a0.phone, pin: a0.pin, line1: a0.line1, line2: a0.line2 || "", landmark: a0.landmark || "", city: a0.city, state: a0.state, type: a0.type || "Home", house: a0.house || "", street: a0.street || "" };
+  setBusy(true, "Checking your order…");
+  try {
+    q = await compute(coupon); drawSum(); setBusy(true, "Checking your order…");
+    if (q.issues.length || !q.lines.length) return setBusy(false), show("Please fix the items in your order first.");
+    if (Math.round(q.grandTotal * 100) < 100) return setBusy(false), show("The order total must be at least ₹1.");
+    const orderNumber = "SCS" + Date.now().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).toUpperCase().slice(2, 5);
+    const base = { uid: user.uid, orderNumber, customerName: a.name, customerEmail: user.email || "", customerPhone: a.phone, items: q.lines, subtotal: q.subtotal, discount: q.discount, shipping: q.shipping, grandTotal: q.grandTotal, couponCode: q.couponCode, shippingAddress: a };
+    if (pm === "cod") return await placeCod({ ...base, status: "PLACED", paymentStatus: "COD_PENDING", paymentMethod: "COD" });
+    if (typeof Razorpay === "undefined") return setBusy(false), show("The payment window couldn't load. Check your connection and try again.");
+    const order = { ...base, status: "PAID", paymentStatus: "PAID", paymentMethod: "Razorpay" };
+    const rz = new Razorpay({
+      key: RAZORPAY_KEY_ID, amount: Math.round(q.grandTotal * 100), currency: "INR", name: "SilvassaCricketStore", description: `Order ${orderNumber}`,
+      prefill: { name: a.name, email: user.email || "", contact: "+91" + a.phone }, notes: { orderNumber, uid: user.uid, email: user.email || "" }, theme: { color: "#073B2C" },
+      method: { upi: true, card: true, netbanking: true, wallet: true, emi: true, paylater: true },   // every method enabled in your Razorpay dashboard
+      retry: { enabled: true, max_count: 4 },
+      handler: resp => onPaid(order, resp),
+      modal: { ondismiss: () => { if (!saving) { setBusy(false); show("Payment was cancelled. Your items are still here whenever you're ready."); } } }
+    });
+    rz.on("payment.failed", r => { console.error(r?.error); show((r?.error?.description || "Payment failed.") + " You can try again."); });
+    rz.open(); setBusy(true, "Waiting for payment…");
+  } catch (e) { console.error(e); show("Something went wrong. Please try again."); setBusy(false); }
+}
+
+/* ---------- saving orders ---------- */
+async function already(o) { try { return !(await getDocs(query(collection(db, "orders"), where("uid", "==", o.uid), where("orderNumber", "==", o.orderNumber), limit(1)))).empty; } catch { return false; } }
+const estDate = d => { const p = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).format(d).split("-").map(Number), e = new Date(Date.UTC(p[0], p[1] - 1, p[2] + 15)); return e.toISOString().slice(0, 10); };  // 15 calendar days after the IST placement date, stored as YYYY-MM-DD
+const fmtEst = s => /^\d{4}-\d{2}-\d{2}$/.test(s || "") ? new Date(s + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) : "";
+async function persist(o) {                       // order document id = order number, so a retry can never create a duplicate
+  let code = ""; o.estimatedDeliveryDate = o.estimatedDeliveryDate || estDate(new Date());   // set once, so retries keep the same date
+  for (let i = 0; i < 4; i++) {
+    try { await setDoc(doc(db, "orders", o.orderNumber), { ...o, createdAt: serverTimestamp() }); return { ok: true }; }
+    catch (e) { console.error(e); code = e.code || "error"; if (await already(o)) return { ok: true }; if (code === "permission-denied") break; await wait(1200); }
+  }
+  return { ok: false, code };
+}
+async function placeCod(o) {
+  saving = true; overlay(true, "Placing your order…");
+  const r = await persist(o); overlay(false); saving = false;
+  if (r.ok) return done(o);
+  setBusy(false); show(`We couldn't place your order (${r.code}). Please try again.`);
+}
+async function onPaid(order, resp) {
+  saving = true; overlay(true, "Payment received. Saving your order…");
+  const o = { ...order, paymentId: resp.razorpay_payment_id };
+  try { localStorage.setItem(STASH, JSON.stringify(o)); } catch {}
+  const r = await persist(o); overlay(false);
+  if (r.ok) { try { localStorage.removeItem(STASH); } catch {} return done(o); }
+  saving = false; setBusy(false); failScreen(o, r.code);
+}
+function failScreen(o, code) {
+  view(`<div class="empty"><h1>Payment received</h1><p>Your payment went through, but we couldn't save your order details just now${code ? ` (${esc(code)})` : ""}.<br>Your order is stored on this device. Tap below to try again, or contact us with this payment ID.</p><p style="margin:14px 0"><b>${esc(o.paymentId)}</b><br><span class="note">Order ${esc(o.orderNumber)} · ${inr(o.grandTotal)}</span></p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn s" id="rt"><span class="spin"></span><span>Try saving again</span></button><a class="btn s l" style="display:inline-flex" href="tel:${CT.tel}">Call ${CT.phone}</a></div></div>`);
+  $("#rt").onclick = async () => { const b = $("#rt"); b.disabled = true; b.classList.add("busy"); const r = await persist(o); if (r.ok) { try { localStorage.removeItem(STASH); } catch {} done(o); } else { b.disabled = false; b.classList.remove("busy"); toast("Still couldn't save. Please call us."); } };
+}
+async function flushStash() {
+  let o = null; try { o = JSON.parse(localStorage.getItem(STASH)); } catch {}
+  if (!o || o.uid !== user.uid || !o.orderNumber) return false;
+  if (o.paymentId) { o.status = "PAID"; o.paymentStatus = "PAID"; o.paymentMethod = "Razorpay"; }   // upgrades orders stashed by the older version
+  overlay(true, "Finishing your earlier order…");
+  const r = await persist(o); overlay(false);
+  if (r.ok) { try { localStorage.removeItem(STASH); } catch {} done(o); return true; }
+  failScreen(o, r.code); return true;
+}
+
+/* ---------- thank-you screen, redirects to My Orders after 5s ---------- */
+function done(o) {
+  try { localStorage.removeItem("scs_pending"); if (!isBuy) localStorage.setItem("scs_cart", "[]"); } catch {}
+  const cod = o.paymentMethod === "COD", t = $("#ty");
+  t.innerHTML = `<div class="tyc"><svg class="ck" viewBox="0 0 110 110" aria-hidden="true"><circle class="rp" cx="55" cy="55" r="44"/><circle class="ring" cx="55" cy="55" r="44"/><path class="tk" d="M36 56l14 14 25-29"/></svg>
+    <h1>Thank you!</h1><p>${cod ? "Your order is placed. Please keep the cash ready for delivery." : "Your payment was successful and your order is confirmed."}</p>
+    <div class="tyd"><div><span>Order number</span><b>${esc(o.orderNumber)}</b></div><div><span>${cod ? "Pay on delivery" : "Amount paid"}</span><b>${inr(o.grandTotal)}</b></div>${o.estimatedDeliveryDate ? `<div><span>Estimated delivery</span><b>${esc(fmtEst(o.estimatedDeliveryDate))}</b></div>` : ""}${o.paymentId ? `<div><span>Payment ID</span><span>${esc(o.paymentId)}</span></div>` : ""}</div>
+    <div class="bar"><i id="bar"></i></div><p class="note" id="cd">Taking you to your orders in ${REDIRECT_SECONDS}…</p>
+    <a class="btn s" style="display:inline-flex;margin-top:12px" href="${ORDERS}">View my orders now</a></div>`;
+  const cols = ["#C4E86B", "#ffffff", "#0B6B45", "#F2B84B", "#7FD1AE"];
+  for (let i = 0; i < 42; i++) { const c = document.createElement("i"); c.className = "cf"; const ang = Math.random() * Math.PI * 2, d = 140 + Math.random() * 260; c.style.cssText = `background:${cols[i % cols.length]};--x:${Math.cos(ang) * d}px;--y:${Math.sin(ang) * d + 120}px;--r:${Math.random() * 720 - 360}deg;animation-delay:${0.25 + Math.random() * .25}s`; t.appendChild(c); }
+  t.classList.add("on"); scrollTo(0, 0);
+  const start = Date.now(), total = REDIRECT_SECONDS * 1000, tick = setInterval(() => {
+    const e = Date.now() - start, left = Math.max(0, Math.ceil((total - e) / 1000));
+    const bar = $("#bar"), cd = $("#cd"); if (bar) bar.style.width = Math.min(100, e / total * 100) + "%"; if (cd) cd.textContent = `Taking you to your orders in ${left}…`;
+    if (e >= total) { clearInterval(tick); location.href = ORDERS; }
+  }, 100);
+}
+addEventListener("pageshow", e => { if (e.persisted) { overlay(false); if (q && !saving) setBusy(false); } });
+</script></body></html>
